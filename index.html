@@ -217,15 +217,14 @@
     <div class="heart" style="top:40%;right:10%;animation-delay:0.8s;">Hearts</div>
 
     <script>
-        // Click to spawn hearts
-        document.body.addEventListener('click', e => {
-            const heart = document.createElement('div');
-            heart.textContent = ['Hearts','Hearts','Hearts','Hearts'][Math.floor(Math.random()*4)];
-            heart.className = 'heart';
-            heart.style.left = e.clientX + 'px';
-            heart.style.top = e.clientY + 'px';
+        document.body.addEventListener('click', e=>{
+            const heart=document.createElement('div');
+            heart.textContent=['💖','💕','💗','💞'][Math.floor(Math.random()*4)];
+            heart.className='heart';
+            heart.style.left=e.clientX+'px';
+            heart.style.top=e.clientY+'px';
             document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 3000);
+            setTimeout(()=>heart.remove(),3000);
         });
     </script>
 
