@@ -10,109 +10,111 @@
     .star { cursor: pointer; font-size: 1.8rem; transition: transform 0.2s; }
     .star:hover { transform: scale(1.3); }
 
-    /* Kiki flying animation */
+    /* Kiki flying */
     #kiki {
       position: fixed;
-      top: 15%;
-      left: -200px;
-      width: 180px;
+      top: 8%;
+      left: -220px;
+      width: 220px;
       z-index: 10;
-      animation: flyKiki 35s linear infinite;
+      animation: flyKiki 60s linear infinite;
+      opacity: 0.85;
     }
     @keyframes flyKiki {
-      0% { left: -200px; transform: scaleX(1); }
+      0% { left: -220px; transform: scaleX(1); }
       45% { left: 50vw; }
-      50% { left: 50vw; transform: scaleX(-1); } /* turn around */
-      95% { left: 100vw; transform: scaleX(-1); }
-      100% { left: -200px; transform: scaleX(1); }
+      50% { left: 50vw; transform: scaleX(-1); }
+      95% { left: 110vw; transform: scaleX(-1); }
+      100% { left: -220px; transform: scaleX(1); }
     }
 
-    /* Totoro running at bottom */
+    /* Totoro running (animated GIF) */
     #totoro {
       position: fixed;
       bottom: 20px;
-      left: -150px;
-      width: 150px;
+      left: -200px;
+      width: 200px;
       z-index: 10;
-      animation: runTotoro 20s linear infinite;
+      animation: runTotoro 50s linear infinite;
+      opacity: 0.8;
     }
     @keyframes runTotoro {
-      0% { left: -150px; transform: scaleX(1); }
-      45% { left: calc(100vw + 150px); transform: scaleX(1); }
-      55% { left: calc(100vw + 150px); transform: scaleX(-1); }
-      100% { left: -150px; transform: scaleX(-1); }
+      0% { left: -200px; transform: scaleX(1); }
+      45% { left: 110vw; transform: scaleX(1); }
+      55% { left: 110vw; transform: scaleX(-1); }
+      100% { left: -200px; transform: scaleX(-1); }
     }
 
     /* Floating Soot Sprites */
     .soot {
       position: fixed;
-      width: 40px;
+      width: 50px;
       pointer-events: none;
-      opacity: 0.7;
-      animation: float linear infinite;
+      opacity: 0.55;
+      animation: floatSoots 35s linear infinite;
     }
-    @keyframes float {
-      0% { transform: translateY(100vh) translateX(0); }
-      100% { transform: translateY(-100px) translateX(100px); }
+    @keyframes floatSoots {
+      0% { transform: translateY(120vh) translateX(0) rotate(0deg); }
+      100% { transform: translateY(-200px) translateX(100px) rotate(360deg); }
     }
 
     /* Falling leaves */
     .leaf {
       position: fixed;
-      width: 30px;
+      width: 45px;
       pointer-events: none;
-      opacity: 0.6;
-      animation: fall linear infinite;
+      opacity: 0.45;
+      animation: fallLeaf 30s linear infinite;
     }
-    @keyframes fall {
-      0% { transform: translateY(-50px) rotate(0deg); }
-      100% { transform: translateY(100vh) rotate(360deg); }
+    @keyframes fallLeaf {
+      0% { transform: translateY(-100px) rotate(0deg); }
+      100% { transform: translateY(110vh) rotate(900deg); }
     }
 
-    /* Card enhancements */
+    /* Card style */
     .movie-card {
-      position: relative;
-      overflow: visible;
-    }
-    .movie-card::before {
-      content: '';
-      position: absolute;
-      top: -15px; left: -15px; right: -15px; bottom: -15px;
-      background: url('https://png.pngtree.com/png-clipart/20190904/original/pngtree-cute-green-border-decoration-png-image_4506686.jpg') center/contain no-repeat;
-      opacity: 0.3;
-      pointer-events: none;
-      z-index: -1;
+      background: rgba(255, 255, 255, 0.93);
+      border-radius: 2rem;
+      overflow: hidden;
+      box-shadow: 0 12px 35px rgba(34, 139, 34, 0.35);
+      transition: all 0.5s ease;
     }
     .movie-card:hover {
-      box-shadow: 0 20px 40px rgba(0,150,0,0.4);
-      transform: translateY(-10px) scale(1.03);
+      transform: translateY(-20px) scale(1.05);
+      box-shadow: 0 30px 60px rgba(34, 139, 34, 0.5);
+    }
+    .leaf-deco {
+      position: absolute;
+      width: 70px;
+      opacity: 0.3;
+      pointer-events: none;
     }
   </style>
 </head>
 <body class="min-h-screen bg-cover bg-center bg-fixed" 
       style="background-image: url('https://wallpapers.com/images/hd/studio-ghibli-rolling-hills-ki5m1rdqacgexsu5.jpg')">
-  <div class="min-h-screen bg-green-900/70 backdrop-blur-sm relative">
+  <div class="min-h-screen bg-green-900/55 backdrop-blur-md relative">
 
-    <!-- Kiki flying -->
-    <img id="kiki" src="https://www.clipartmax.com/png/middle/200-2005519_kiki-and-gigi-by-badbird29-kikis-delivery-service-png.png" alt="Kiki flying">
+    <!-- Kiki flying (clean transparent) -->
+    <img id="kiki" src="https://www.clipartmax.com/png/middle/200-2005519_kiki-and-gigi-by-badbird29-kikis-delivery-service-png.png" alt="Kiki">
 
-    <!-- Totoro running -->
-    <img id="totoro" src="https://www.kindpng.com/picc/m/57-578229_ghibli-museum-catbus-satsuki-kusakabe-studio-ghibli-totoro.png" alt="Totoro running">
+    <!-- Totoro running (transparent animated GIF) -->
+    <img id="totoro" src="https://media.tenor.com/STEjxotaVvwAAAAM/totoro.gif" alt="Totoro running">
 
     <header class="text-center py-12 relative z-20">
       <h1 class="text-5xl md:text-6xl font-bold text-white drop-shadow-2xl">My Ghibli Watchlist 🌿✨</h1>
-      <p class="text-xl text-green-100 mt-4">A magical journey through Studio Ghibli films</p>
+      <p class="text-xl text-green-100 mt-4">A peaceful journey through Studio Ghibli films</p>
     </header>
 
     <main class="max-w-7xl mx-auto px-6 pb-20 relative z-20">
-      <div class="flex justify-center gap-4 mb-10 flex-wrap">
-        <button onclick="setFilter('all')" class="px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-500 transition text-lg font-medium">All</button>
-        <button onclick="setFilter('plan')" class="px-8 py-3 bg-amber-600 text-white rounded-full hover:bg-amber-500 transition text-lg font-medium">Plan to Watch</button>
-        <button onclick="setFilter('watched')" class="px-8 py-3 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 transition text-lg font-medium">Watched</button>
+      <div class="flex justify-center gap-6 mb-12 flex-wrap">
+        <button onclick="setFilter('all')" class="px-8 py-3 bg-green-600/90 text-white rounded-full hover:bg-green-500 transition text-lg font-medium">All Films</button>
+        <button onclick="setFilter('plan')" class="px-8 py-3 bg-amber-600/90 text-white rounded-full hover:bg-amber-500 transition text-lg font-medium">Plan to Watch</button>
+        <button onclick="setFilter('watched')" class="px-8 py-3 bg-emerald-600/90 text-white rounded-full hover:bg-emerald-500 transition text-lg font-medium">Watched</button>
       </div>
 
       <div id="movie-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
-        <div class="text-white text-center">Loading magical films...</div>
+        <div class="text-white text-center text-2xl">Loading the magic...</div>
       </div>
     </main>
   </div>
@@ -150,37 +152,37 @@
       });
 
       if (filtered.length === 0) {
-        grid.innerHTML = '<p class="text-white text-3xl col-span-full text-center">No movies here yet ✨</p>';
+        grid.innerHTML = '<p class="text-white text-3xl col-span-full text-center py-20">No films here yet... 🌱</p>';
         return;
       }
 
       filtered.forEach(movie => {
         const data = watchlist[movie.id] || { status: 'none', rating: 0 };
         const card = document.createElement('div');
-        card.className = 'movie-card bg-white/95 rounded-3xl overflow-hidden shadow-2xl transition-all duration-500';
+        card.className = 'movie-card relative';
 
         card.innerHTML = `
-          <img src="${movie.movie_banner || movie.image}" alt="${movie.title}" class="w-full h-72 object-cover"/>
-          <div class="p-6 relative">
+          <!-- Subtle leaf decorations -->
+          <img src="https://icon2.cleanpng.com/20180710/csl/kisspng-leaf-petal-clip-art-5b4443733e1f55.5016925615312003712545.jpg" class="leaf-deco top-6 left-6 -rotate-12">
+          <img src="https://icon2.cleanpng.com/20180710/csl/kisspng-leaf-petal-clip-art-5b4443733e1f55.5016925615312003712545.jpg" class="leaf-deco bottom-6 right-6 rotate-12">
+
+          <img src="${movie.movie_banner || movie.image}" alt="${movie.title}" class="w-full h-80 object-cover"/>
+          <div class="p-7">
             <h2 class="text-2xl font-bold text-green-900">${movie.title}</h2>
             <p class="text-gray-600 mt-1">${movie.director} • ${movie.release_date}</p>
             <p class="text-gray-700 text-sm mt-3 line-clamp-3">${movie.description}</p>
 
-            <!-- Tiny leaf decoration -->
-            <img src="https://e7.pngegg.com/pngimages/860/243/png-clipart-bacterium-illustration-susuwatari-studio-ghibli-ghibli-museum-sprite-leaf-sticker.png" 
-                 class="absolute top-2 right-2 w-16 opacity-50" alt="leaf">
-
-            <div class="mt-6 space-y-4">
+            <div class="mt-8 space-y-5">
               <select onchange="updateMovie('${movie.id}', this.value)" 
-                      class="w-full px-4 py-3 rounded-xl border-4 border-green-400 bg-white text-gray-800 font-medium text-lg">
+                      class="w-full px-5 py-3 rounded-xl border-4 border-green-300 bg-white/90 text-gray-800 font-medium text-lg">
                 <option value="none" ${data.status === 'none' ? 'selected' : ''}>Not Set</option>
                 <option value="plan" ${data.status === 'plan' ? 'selected' : ''}>🌱 Plan to Watch</option>
                 <option value="watched" ${data.status === 'watched' ? 'selected' : ''}>✨ Watched</option>
               </select>
 
               ${data.status === 'watched' ? `
-                <div class="flex items-center justify-center gap-2">
-                  <span class="text-gray-700 font-medium text-lg">My Rating:</span>
+                <div class="flex items-center justify-center gap-3">
+                  <span class="text-gray-700 font-medium text-lg">Rating:</span>
                   ${[1,2,3,4,5].map(star => `
                     <span class="star" onclick="updateMovie('${movie.id}', 'watched', ${star})">
                       ${star <= data.rating ? '⭐' : '☆'}
@@ -202,21 +204,21 @@
         renderMovies();
       });
 
-    // Add floating Soot Sprites and leaves
-    function createFloater(src, className, delayRange = 10, durationRange = 20) {
+    // Gentle floating elements (spawn infrequently)
+    function createFloater(src, className, size = '50px') {
       const img = document.createElement('img');
       img.src = src;
       img.className = className;
-      img.style.left = Math.random() * 100 + 'vw';
-      img.style.animationDelay = Math.random() * delayRange + 's';
-      img.style.animationDuration = (15 + Math.random() * durationRange) + 's';
+      img.style.width = size;
+      img.style.left = Math.random() * 90 + 'vw';
+      img.style.animationDelay = Math.random() * 15 + 's';
+      img.style.animationDuration = (25 + Math.random() * 25) + 's';
       document.body.appendChild(img);
+      setTimeout(() => img.remove(), 60000);
     }
 
-    setInterval(() => {
-      createFloater('https://i.pinimg.com/1200x/e6/f3/10/e6f3100db0c0511804e9581ea0ae1450.jpg', 'soot', 5, 15);
-      createFloater('https://p7.hiclipart.com/preview/611/920/879/catbus-chibiusa-drawing-studio-ghibli-totoro.jpg', 'leaf', 8, 20);
-    }, 3000);
+    setInterval(() => createFloater('https://i.pinimg.com/1200x/e6/f3/10/e6f3100db0c0511804e9581ea0ae1450.jpg', 'soot', '50px'), 10000);
+    setInterval(() => createFloater('https://static.vecteezy.com/system/resources/thumbnails/054/127/318/small_2x/green-leaves-falling-from-the-sky-on-a-transparent-background-png.png', 'leaf', '60px'), 12000);
   </script>
 </body>
 </html>
