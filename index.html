@@ -10,20 +10,22 @@
     .star { cursor: pointer; font-size: 1.5rem; }
     .star:hover { transform: scale(1.2); }
 
-    /* Big magical butterfly - now in front! */
-    .butterfly {
-      position: absolute;
-      width: 280px; /* super big */
+    /* Very big magical butterfly for the whole page - behind everything */
+    #page-butterfly {
+      position: fixed;
+      bottom: -100px; /* peeks up from bottom */
+      right: -100px; /* peeks from right */
+      width: 800px; /* very big, suitable for full page */
       pointer-events: none;
-      z-index: 20; /* brought forward */
-      opacity: 0.95;
-      animation: flutter 10s ease-in-out infinite;
+      z-index: -1; /* behind cards and content */
+      opacity: 0.85;
+      animation: flutter 14s ease-in-out infinite;
     }
     @keyframes flutter {
       0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
-      25% { transform: translateY(-25px) translateX(20px) rotate(12deg); }
-      50% { transform: translateY(15px) translateX(-15px) rotate(-8deg); }
-      75% { transform: translateY(-20px) translateX(-18px) rotate(15deg); }
+      25% { transform: translateY(-50px) translateX(40px) rotate(15deg); }
+      50% { transform: translateY(40px) translateX(-30px) rotate(-12deg); }
+      75% { transform: translateY(-45px) translateX(-40px) rotate(18deg); }
     }
 
     .movie-card:hover {
@@ -34,12 +36,16 @@
 </head>
 <body class="min-h-screen bg-cover bg-center bg-fixed"
       style="background-image: url('https://wallpapers.com/images/hd/studio-ghibli-rolling-hills-ki5m1rdqacgexsu5.jpg')">
-  <div class="min-h-screen bg-green-900/70 backdrop-blur-sm">
-    <header class="text-center py-12">
+  <div class="min-h-screen bg-green-900/70 backdrop-blur-sm relative">
+
+    <!-- Very big magical butterfly for the entire page -->
+    <img id="page-butterfly" src="https://i.pinimg.com/originals/df/dc/d3/dfdcd35174eeff31c50d1a23bd788af7.gif" alt="Magical butterfly">
+
+    <header class="text-center py-12 relative z-10">
       <h1 class="text-5xl md:text-6xl font-bold text-white drop-shadow-2xl">My Ghibli Watchlist 🌿</h1>
       <p class="text-xl text-green-100 mt-4">Track your magical journey through Studio Ghibli films</p>
     </header>
-    <main class="max-w-7xl mx-auto px-6 pb-12">
+    <main class="max-w-7xl mx-auto px-6 pb-12 relative z-10">
       <div class="flex justify-center gap-4 mb-10 flex-wrap">
         <button onclick="setFilter('all')" class="px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-500 transition text-lg font-medium">All</button>
         <button onclick="setFilter('plan')" class="px-8 py-3 bg-amber-600 text-white rounded-full hover:bg-amber-500 transition text-lg font-medium">Plan to Watch</button>
@@ -83,9 +89,6 @@
       }
       filtered.forEach(movie => {
         const data = watchlist[movie.id] || { status: 'none', rating: 0 };
-        const cardWrapper = document.createElement('div');
-        cardWrapper.className = 'relative';
-
         const card = document.createElement('div');
         card.className = 'bg-white/95 rounded-3xl overflow-hidden shadow-2xl movie-card';
 
@@ -114,26 +117,7 @@
             </div>
           </div>
         `;
-
-        // Your exact butterfly code — now brought forward!
-        const butterfly = document.createElement('img');
-        butterfly.src = 'https://i.pinimg.com/originals/df/dc/d3/dfdcd35174eeff31c50d1a23bd788af7.gif';
-        butterfly.className = 'butterfly';
-        const positionClasses = [
-          ['top-8', 'left-8'],
-          ['top-8', 'right-8'],
-          ['bottom-8', 'left-8'],
-          ['bottom-8', 'right-12'],
-          ['top-1/2', 'left-0', '-translate-y-1/2'],
-          ['top-1/2', 'right-0', '-translate-y-1/2']
-        ];
-        const chosen = positionClasses[Math.floor(Math.random() * positionClasses.length)];
-        chosen.forEach(cls => butterfly.classList.add(cls));
-        butterfly.style.animationDelay = Math.random() * 4 + 's';
-
-        cardWrapper.appendChild(card);
-        cardWrapper.appendChild(butterfly);
-        grid.appendChild(cardWrapper);
+        grid.appendChild(card);
       });
     }
 
