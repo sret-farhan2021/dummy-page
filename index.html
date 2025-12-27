@@ -52,13 +52,11 @@
       <p class="text-xl text-green-100 mt-4">Track your magical journey through Studio Ghibli films</p>
     </header>
     <main class="max-w-7xl mx-auto px-6 pb-12">
-      <!-- Filters -->
       <div class="flex justify-center gap-4 mb-10 flex-wrap">
         <button onclick="setFilter('all')" class="px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-500 transition text-lg font-medium">All</button>
         <button onclick="setFilter('plan')" class="px-8 py-3 bg-amber-600 text-white rounded-full hover:bg-amber-500 transition text-lg font-medium">Plan to Watch</button>
         <button onclick="setFilter('watched')" class="px-8 py-3 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 transition text-lg font-medium">Watched</button>
       </div>
-      <!-- Movie Grid -->
       <div id="movie-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         <div class="text-white text-center">Loading magical films...</div>
       </div>
@@ -70,7 +68,6 @@
     let watchlist = JSON.parse(localStorage.getItem('ghibliWatchlist') || '{}');
     let currentFilter = 'all';
 
-    // Iconic character PNGs for each film
     const characterIcons = {
       "Castle in the Sky": "https://www.pngkey.com/png/full/114-1149849_laputa-castle-in-the-sky-sheeta-and-pazu.png",
       "My Neighbor Totoro": "https://www.kindpng.com/picc/m/57-578229_ghibli-museum-catbus-satsuki-kusakabe-studio-ghibli-totoro.png",
@@ -131,18 +128,13 @@
         const iconUrl = characterIcons[movie.title] || "https://www.kindpng.com/picc/m/57-578229_ghibli-museum-catbus-satsuki-kusakabe-studio-ghibli-totoro.png";
 
         card.innerHTML = `
-          <!-- Vine Border -->
           <div class="vine-border"></div>
-
-          <img src="${movie.movie_banner || movie.image}" alt="${movie.title}" class="w-full h-64 object-cover relative z-0"/>
+          <img src="${movie.movie_banner || movie.image}" alt="${movie.title}" class="w-full h-64 object-cover"/>
           <div class="p-6 relative z-0">
             <h2 class="text-2xl font-bold text-green-900">${movie.title}</h2>
             <p class="text-gray-600 mt-1">${movie.director} • ${movie.release_date}</p>
             <p class="text-gray-700 text-sm mt-3 line-clamp-3">${movie.description}</p>
-
-            <!-- Character icon in bottom right -->
             <img src="${iconUrl}" alt="${movie.title} character" class="character-icon absolute bottom-4 right-4 drop-shadow-lg">
-
             <div class="mt-6 space-y-3">
               <select onchange="updateMovie('${movie.id}', this.value)"
                       class="w-full px-4 py-2 rounded-lg border-2 border-green-400 bg-white text-gray-800 font-medium">
@@ -163,14 +155,20 @@
           </div>
         `;
 
-        // Add fluttering butterfly
+        // Fixed butterfly positioning
         const butterfly = document.createElement('img');
         butterfly.src = 'https://i.pinimg.com/originals/df/dc/d3/dfdcd35174eeff31c50d1a23bd788af7.gif';
         butterfly.className = 'butterfly';
-        // Random position around the card
-        const positions = ['top-8 left-8', 'top-8 right-8', 'bottom-8 left-8', 'bottom-8 right-12', 'top-1/2 left-0 -translate-y-1/2', 'top-1/2 right-0 -translate-y-1/2'];
-        butterfly.classList.add(positions[Math.floor(Math.random() * positions.length)]);
-        // Random animation delay for variety
+        const positionClasses = [
+          ['top-8', 'left-8'],
+          ['top-8', 'right-8'],
+          ['bottom-8', 'left-8'],
+          ['bottom-8', 'right-12'],
+          ['top-1/2', 'left-0', '-translate-y-1/2'],
+          ['top-1/2', 'right-0', '-translate-y-1/2']
+        ];
+        const chosen = positionClasses[Math.floor(Math.random() * positionClasses.length)];
+        chosen.forEach(cls => butterfly.classList.add(cls));
         butterfly.style.animationDelay = Math.random() * 4 + 's';
 
         cardWrapper.appendChild(card);
@@ -178,26 +176,16 @@
         grid.appendChild(cardWrapper);
       });
     }
-    // Improved fetch with better error message
+
     fetch(API_URL)
-      .then(res => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-        return res.json();
-      })
+      .then(res => res.json())
       .then(data => {
         movies = data.sort((a, b) => a.release_date - b.release_date);
         renderMovies();
       })
       .catch(err => {
-        console.error('Fetch error:', err);
         document.getElementById('movie-grid').innerHTML =
-          `<p class="text-red-300 text-center col-span-full text-xl">
-            Failed to load films 😢<br>
-            Error: ${err.message}<br><br>
-            Check your internet, disable ad-blockers, or try refreshing!
-          </p>`;
+          '<p class="text-red-300 text-center col-span-full">Failed to load films 😢 Check your internet!</p>';
       });
   </script>
 </body>
