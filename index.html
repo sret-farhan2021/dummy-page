@@ -10,13 +10,13 @@
     .star { cursor: pointer; font-size: 1.5rem; }
     .star:hover { transform: scale(1.2); }
 
-    /* Big magical butterfly - behind the card */
+    /* Big magical butterfly - now in front! */
     .butterfly {
       position: absolute;
       width: 280px; /* super big */
       pointer-events: none;
-      z-index: -1; /* behind card content */
-      opacity: 0.9;
+      z-index: 20; /* brought forward */
+      opacity: 0.95;
       animation: flutter 10s ease-in-out infinite;
     }
     @keyframes flutter {
@@ -115,7 +115,7 @@
           </div>
         `;
 
-        // Your exact butterfly code — big, behind, random position around card
+        // Your exact butterfly code — now brought forward!
         const butterfly = document.createElement('img');
         butterfly.src = 'https://i.pinimg.com/originals/df/dc/d3/dfdcd35174eeff31c50d1a23bd788af7.gif';
         butterfly.className = 'butterfly';
