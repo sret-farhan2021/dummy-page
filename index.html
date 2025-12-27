@@ -9,16 +9,48 @@
     body { font-family: 'Segoe UI', system-ui, sans-serif; }
     .star { cursor: pointer; font-size: 1.5rem; }
     .star:hover { transform: scale(1.2); }
+    .character-icon {
+      width: 110px;
+      height: auto;
+      object-fit: contain;
+    }
+    .vine-border {
+      position: absolute;
+      top: -15px;
+      left: -15px;
+      right: -15px;
+      bottom: -15px;
+      background-image: url('https://p7.hiclipart.com/preview/322/1021/263/leaf-green-vine-vines-border.jpg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0.85;
+    }
+    .butterfly {
+      position: absolute;
+      width: 70px;
+      pointer-events: none;
+      z-index: 20;
+      animation: flutter 8s ease-in-out infinite;
+      opacity: 0.9;
+    }
+    @keyframes flutter {
+      0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
+      25% { transform: translateY(-20px) translateX(15px) rotate(10deg); }
+      50% { transform: translateY(10px) translateX(-10px) rotate(-10deg); }
+      75% { transform: translateY(-15px) translateX(-20px) rotate(15deg); }
+    }
   </style>
 </head>
-<body class="min-h-screen bg-cover bg-center bg-fixed" 
+<body class="min-h-screen bg-cover bg-center bg-fixed"
       style="background-image: url('https://wallpapers.com/images/hd/studio-ghibli-rolling-hills-ki5m1rdqacgexsu5.jpg')">
   <div class="min-h-screen bg-green-900/70 backdrop-blur-sm">
     <header class="text-center py-12">
       <h1 class="text-5xl md:text-6xl font-bold text-white drop-shadow-2xl">My Ghibli Watchlist 🌿</h1>
       <p class="text-xl text-green-100 mt-4">Track your magical journey through Studio Ghibli films</p>
     </header>
-
     <main class="max-w-7xl mx-auto px-6 pb-12">
       <!-- Filters -->
       <div class="flex justify-center gap-4 mb-10 flex-wrap">
@@ -26,30 +58,50 @@
         <button onclick="setFilter('plan')" class="px-8 py-3 bg-amber-600 text-white rounded-full hover:bg-amber-500 transition text-lg font-medium">Plan to Watch</button>
         <button onclick="setFilter('watched')" class="px-8 py-3 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 transition text-lg font-medium">Watched</button>
       </div>
-
       <!-- Movie Grid -->
       <div id="movie-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-        <!-- Movies will be injected here by JavaScript -->
         <div class="text-white text-center">Loading magical films...</div>
       </div>
     </main>
   </div>
-
   <script>
     const API_URL = 'https://ghibliapi.vercel.app/films';
     let movies = [];
     let watchlist = JSON.parse(localStorage.getItem('ghibliWatchlist') || '{}');
     let currentFilter = 'all';
 
+    // Iconic character PNGs for each film
+    const characterIcons = {
+      "Castle in the Sky": "https://www.pngkey.com/png/full/114-1149849_laputa-castle-in-the-sky-sheeta-and-pazu.png",
+      "My Neighbor Totoro": "https://www.kindpng.com/picc/m/57-578229_ghibli-museum-catbus-satsuki-kusakabe-studio-ghibli-totoro.png",
+      "Grave of the Fireflies": "https://i.pinimg.com/originals/8f/2d/4e/8f2d4e9b0d4e4f0e4b0e4f0e4b0e4f0e.png",
+      "Kiki's Delivery Service": "https://www.clipartmax.com/png/middle/200-2005519_kiki-and-gigi-by-badbird29-kikis-delivery-service-png.png",
+      "Only Yesterday": "https://static.wikia.nocookie.net/studio-ghibli/images/0/0a/Taeko_Okajima.png/revision/latest?cb=20160409184512",
+      "Porco Rosso": "https://www.pngkey.com/png/full/102-1024653_porco-rosso-studio-ghibli.png",
+      "Pom Poko": "https://static.wikia.nocookie.net/studio-ghibli/images/9/9f/Pom_Poko_poster.png/revision/latest?cb=20160409184623",
+      "Whisper of the Heart": "https://www.pngkey.com/png/full/156-1561568_whisper-of-the-heart-studio-ghibli.png",
+      "Princess Mononoke": "https://www.kindpng.com/picc/m/148-1489313_princess-mononoke-san-and-wolf-png-download-princess.png",
+      "Spirited Away": "https://www.pngkey.com/png/full/102-1024653_no-face-spirited-away-studio-ghibli.png",
+      "The Cat Returns": "https://static.wikia.nocookie.net/studio-ghibli/images/3/3e/The_Cat_Returns_poster.png/revision/latest?cb=20160409184712",
+      "Howl's Moving Castle": "https://www.pngkey.com/png/full/156-1561568_howl-and-sophie-howls-moving-castle.png",
+      "Tales from Earthsea": "https://static.wikia.nocookie.net/studio-ghibli/images/0/0a/Tales_from_Earthsea_poster.png/revision/latest?cb=20160409184745",
+      "Ponyo": "https://www.kindpng.com/picc/m/148-1489313_ponyo-and-sosuke-studio-ghibli.png",
+      "The Secret World of Arrietty": "https://static.wikia.nocookie.net/studio-ghibli/images/9/9f/Arrietty_poster.png/revision/latest?cb=20160409184823",
+      "From Up on Poppy Hill": "https://static.wikia.nocookie.net/studio-ghibli/images/3/3e/From_Up_on_Poppy_Hill_poster.png/revision/latest?cb=20160409184856",
+      "The Wind Rises": "https://static.wikia.nocookie.net/studio-ghibli/images/0/0a/The_Wind_Rises_poster.png/revision/latest?cb=20160409184929",
+      "The Tale of the Princess Kaguya": "https://static.wikia.nocookie.net/studio-ghibli/images/9/9f/The_Tale_of_the_Princess_Kaguya_poster.png/revision/latest?cb=20160409185002",
+      "When Marnie Was There": "https://static.wikia.nocookie.net/studio-ghibli/images/3/3e/When_Marnie_Was_There_poster.png/revision/latest?cb=20160409185035",
+      "Earwig and the Witch": "https://static.wikia.nocookie.net/studio-ghibli/images/0/0a/Earwig_and_the_Witch_poster.png/revision/latest?cb=20210204184512",
+      "The Boy and the Heron": "https://static.wikia.nocookie.net/studio-ghibli/images/9/9f/The_Boy_and_the_Heron_poster.png/revision/latest?cb=20231209184623"
+    };
+
     function saveWatchlist() {
       localStorage.setItem('ghibliWatchlist', JSON.stringify(watchlist));
     }
-
     function setFilter(filter) {
       currentFilter = filter;
       renderMovies();
     }
-
     function updateMovie(id, status, rating = 0) {
       if (!watchlist[id]) watchlist[id] = {};
       watchlist[id].status = status;
@@ -57,41 +109,47 @@
       saveWatchlist();
       renderMovies();
     }
-
     function renderMovies() {
       const grid = document.getElementById('movie-grid');
       grid.innerHTML = '';
-
       const filtered = movies.filter(movie => {
         if (currentFilter === 'all') return true;
         return watchlist[movie.id]?.status === currentFilter;
       });
-
       if (filtered.length === 0) {
         grid.innerHTML = '<p class="text-white text-2xl col-span-full text-center">No movies here yet ✨</p>';
         return;
       }
-
       filtered.forEach(movie => {
         const data = watchlist[movie.id] || { status: 'none', rating: 0 };
+        const cardWrapper = document.createElement('div');
+        cardWrapper.className = 'relative';
+
         const card = document.createElement('div');
-        card.className = 'bg-white/95 rounded-3xl overflow-hidden shadow-2xl hover:scale-105 transition-transform duration-300';
+        card.className = 'bg-white/95 rounded-3xl overflow-hidden shadow-2xl hover:scale-105 transition-transform duration-300 relative';
+
+        const iconUrl = characterIcons[movie.title] || "https://www.kindpng.com/picc/m/57-578229_ghibli-museum-catbus-satsuki-kusakabe-studio-ghibli-totoro.png";
 
         card.innerHTML = `
-          <img src="${movie.movie_banner || movie.image}" alt="${movie.title}" class="w-full h-64 object-cover"/>
-          <div class="p-6">
+          <!-- Vine Border -->
+          <div class="vine-border"></div>
+
+          <img src="${movie.movie_banner || movie.image}" alt="${movie.title}" class="w-full h-64 object-cover relative z-0"/>
+          <div class="p-6 relative z-0">
             <h2 class="text-2xl font-bold text-green-900">${movie.title}</h2>
             <p class="text-gray-600 mt-1">${movie.director} • ${movie.release_date}</p>
             <p class="text-gray-700 text-sm mt-3 line-clamp-3">${movie.description}</p>
 
+            <!-- Character icon in bottom right -->
+            <img src="${iconUrl}" alt="${movie.title} character" class="character-icon absolute bottom-4 right-4 drop-shadow-lg">
+
             <div class="mt-6 space-y-3">
-              <select onchange="updateMovie('${movie.id}', this.value)" 
+              <select onchange="updateMovie('${movie.id}', this.value)"
                       class="w-full px-4 py-2 rounded-lg border-2 border-green-400 bg-white text-gray-800 font-medium">
                 <option value="none" ${data.status === 'none' ? 'selected' : ''}>Not Set</option>
                 <option value="plan" ${data.status === 'plan' ? 'selected' : ''}>Plan to Watch</option>
                 <option value="watched" ${data.status === 'watched' ? 'selected' : ''}>Watched</option>
               </select>
-
               ${data.status === 'watched' ? `
                 <div class="flex items-center justify-center gap-1">
                   <span class="text-gray-700 font-medium">Rating:</span>
@@ -104,10 +162,22 @@
             </div>
           </div>
         `;
-        grid.appendChild(card);
+
+        // Add fluttering butterfly
+        const butterfly = document.createElement('img');
+        butterfly.src = 'https://i.pinimg.com/originals/df/dc/d3/dfdcd35174eeff31c50d1a23bd788af7.gif';
+        butterfly.className = 'butterfly';
+        // Random position around the card
+        const positions = ['top-8 left-8', 'top-8 right-8', 'bottom-8 left-8', 'bottom-8 right-12', 'top-1/2 left-0 -translate-y-1/2', 'top-1/2 right-0 -translate-y-1/2'];
+        butterfly.classList.add(positions[Math.floor(Math.random() * positions.length)]);
+        // Random animation delay for variety
+        butterfly.style.animationDelay = Math.random() * 4 + 's';
+
+        cardWrapper.appendChild(card);
+        cardWrapper.appendChild(butterfly);
+        grid.appendChild(cardWrapper);
       });
     }
-
     // Fetch movies on load
     fetch(API_URL)
       .then(res => res.json())
@@ -116,7 +186,7 @@
         renderMovies();
       })
       .catch(err => {
-        document.getElementById('movie-grid').innerHTML = 
+        document.getElementById('movie-grid').innerHTML =
           '<p class="text-red-300 text-center col-span-full">Failed to load films 😢 Check your internet!</p>';
       });
   </script>
