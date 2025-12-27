@@ -65,7 +65,7 @@
     let watchlist = JSON.parse(localStorage.getItem('ghibliWatchlist') || '{}');
     let currentFilter = 'all';
 
-    // Only the truly missing ones (Nausicaä and Ocean Waves) with working images
+    // Fixed extras with reliable high-res official posters
     const extraFilms = [
       {
         id: 'nausicaa-1984',
@@ -73,8 +73,8 @@
         description: 'Warrior and pacifist Princess Nausicaä desperately struggles to prevent two warring nations from destroying themselves and their dying planet.',
         director: 'Hayao Miyazaki',
         release_date: '1984',
-        movie_banner: 'https://image.tmdb.org/t/p/original/5w0JguZqC0txcH2oHs4eieF4g6y.jpg',
-        image: 'https://image.tmdb.org/t/p/original/gmG7c4U5d4E6j6CRBdb2Q4r5T1t.jpg'
+        movie_banner: 'https://www.impawards.com/1985/posters/nausicaa_xlg.jpg', // High-res official poster
+        image: 'https://www.impawards.com/1985/posters/nausicaa_xlg.jpg'
       },
       {
         id: 'ocean-waves-1993',
@@ -82,8 +82,8 @@
         description: 'As a young man returns home after his first year away at college he recalls his senior year of high school and the iron-willed, self-sufficient girl that stole his heart.',
         director: 'Tomomi Mochizuki',
         release_date: '1993',
-        movie_banner: 'https://image.tmdb.org/t/p/original/np1w7nQ4fQ4Vof3W6f9f0rv6btv.jpg',
-        image: 'https://image.tmdb.org/t/p/original/np1w7nQ4fQ4Vof3W6f9f0rv6btv.jpg'
+        movie_banner: 'https://image.tmdb.org/t/p/original/6vL9aE6cT3W5Z5J2fOQ1g7r1r0K.jpg', // Official GKIDS/TMDB poster
+        image: 'https://image.tmdb.org/t/p/original/6vL9aE6cT3W5Z5J2fOQ1g7r1r0K.jpg'
       }
     ];
 
