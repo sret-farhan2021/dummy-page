@@ -65,7 +65,7 @@
     let watchlist = JSON.parse(localStorage.getItem('ghibliWatchlist') || '{}');
     let currentFilter = 'all';
 
-    // Hardcoded extras (including The Boy and the Heron just in case)
+    // Only the truly missing ones (Nausicaä and Ocean Waves) with working images
     const extraFilms = [
       {
         id: 'nausicaa-1984',
@@ -82,26 +82,8 @@
         description: 'As a young man returns home after his first year away at college he recalls his senior year of high school and the iron-willed, self-sufficient girl that stole his heart.',
         director: 'Tomomi Mochizuki',
         release_date: '1993',
-        movie_banner: 'https://image.tmdb.org/t/p/original/4zJ7p1yB1c9o4R3p4Z2Z8L3Z9nQ.jpg',
-        image: 'https://image.tmdb.org/t/p/original/4zJ7p1yB1c9o4R3p4Z2Z8L3Z9nQ.jpg'
-      },
-      {
-        id: 'yamadas-1999',
-        title: 'My Neighbors the Yamadas',
-        description: 'The Yamadas are a typical middle class Japanese family in urban Tokyo and this film shows us a variety of episodes of their lives.',
-        director: 'Isao Takahata',
-        release_date: '1999',
-        movie_banner: 'https://image.tmdb.org/t/p/original/8Uf2cr1ah9p9n2h1bF8f4f4o1oA.jpg',
-        image: 'https://image.tmdb.org/t/p/original/8Uf2cr1ah9p9n2h1bF8f4f4o1oA.jpg'
-      },
-      {
-        id: 'boy-heron-2023',
-        title: 'The Boy and the Heron',
-        description: 'A young boy named Mahito yearning for his mother ventures into a world shared by the living and the dead. There, death comes to an end, and life finds a new beginning.',
-        director: 'Hayao Miyazaki',
-        release_date: '2023',
-        movie_banner: 'https://image.tmdb.org/t/p/original/jhC8gZ0o5h5q2E4zr6tT3cOp3wM.jpg',
-        image: 'https://image.tmdb.org/t/p/original/fp0M4JEx9nCnbN2U4y8swmz8LGs.jpg'
+        movie_banner: 'https://image.tmdb.org/t/p/original/np1w7nQ4fQ4Vof3W6f9f0rv6btv.jpg',
+        image: 'https://image.tmdb.org/t/p/original/np1w7nQ4fQ4Vof3W6f9f0rv6btv.jpg'
       }
     ];
 
