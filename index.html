@@ -178,16 +178,26 @@
         grid.appendChild(cardWrapper);
       });
     }
-    // Fetch movies on load
+    // Improved fetch with better error message
     fetch(API_URL)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then(data => {
         movies = data.sort((a, b) => a.release_date - b.release_date);
         renderMovies();
       })
       .catch(err => {
+        console.error('Fetch error:', err);
         document.getElementById('movie-grid').innerHTML =
-          '<p class="text-red-300 text-center col-span-full">Failed to load films 😢 Check your internet!</p>';
+          `<p class="text-red-300 text-center col-span-full text-xl">
+            Failed to load films 😢<br>
+            Error: ${err.message}<br><br>
+            Check your internet, disable ad-blockers, or try refreshing!
+          </p>`;
       });
   </script>
 </body>
