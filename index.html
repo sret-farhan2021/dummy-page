@@ -65,7 +65,7 @@
     let watchlist = JSON.parse(localStorage.getItem('ghibliWatchlist') || '{}');
     let currentFilter = 'all';
 
-    // Fixed extras with reliable high-res official posters
+    // Extras with your exact poster URLs
     const extraFilms = [
       {
         id: 'nausicaa-1984',
@@ -73,8 +73,8 @@
         description: 'Warrior and pacifist Princess Nausicaä desperately struggles to prevent two warring nations from destroying themselves and their dying planet.',
         director: 'Hayao Miyazaki',
         release_date: '1984',
-        movie_banner: 'https://www.impawards.com/1985/posters/nausicaa_xlg.jpg', // High-res official poster
-        image: 'https://www.impawards.com/1985/posters/nausicaa_xlg.jpg'
+        movie_banner: 'https://m.media-amazon.com/images/M/MV5BODBhMTI3YzMtNTRjYS00OTFkLWJmODUtNjJiNzcwYTVkNDhiXkEyXkFqcGc@._V1_.jpg',
+        image: 'https://m.media-amazon.com/images/M/MV5BODBhMTI3YzMtNTRjYS00OTFkLWJmODUtNjJiNzcwYTVkNDhiXkEyXkFqcGc@._V1_.jpg'
       },
       {
         id: 'ocean-waves-1993',
@@ -82,8 +82,17 @@
         description: 'As a young man returns home after his first year away at college he recalls his senior year of high school and the iron-willed, self-sufficient girl that stole his heart.',
         director: 'Tomomi Mochizuki',
         release_date: '1993',
-        movie_banner: 'https://image.tmdb.org/t/p/original/6vL9aE6cT3W5Z5J2fOQ1g7r1r0K.jpg', // Official GKIDS/TMDB poster
-        image: 'https://image.tmdb.org/t/p/original/6vL9aE6cT3W5Z5J2fOQ1g7r1r0K.jpg'
+        movie_banner: 'https://m.media-amazon.com/images/M/MV5BYmI5Nzk4ZGMtNWY2ZS00MzBiLWFkMmMtYjI3ZjYxM2NiNzRlXkEyXkFqcGc@._V1_.jpg',
+        image: 'https://m.media-amazon.com/images/M/MV5BYmI5Nzk4ZGMtNWY2ZS00MzBiLWFkMmMtYjI3ZjYxM2NiNzRlXkEyXkFqcGc@._V1_.jpg'
+      },
+      {
+        id: 'boy-heron-2023',
+        title: 'The Boy and the Heron',
+        description: 'A young boy named Mahito yearning for his mother ventures into a world shared by the living and the dead. There, death comes to an end, and life finds a new beginning.',
+        director: 'Hayao Miyazaki',
+        release_date: '2023',
+        movie_banner: 'https://m.media-amazon.com/images/M/MV5BMzA5Zjg3MTAtM2FhZS00NTNjLTg3NjEtNWQ4MTRhZjhiNzVmXkEyXkFqcGc@._V1_.jpg',
+        image: 'https://m.media-amazon.com/images/M/MV5BMzA5Zjg3MTAtM2FhZS00NTNjLTg3NjEtNWQ4MTRhZjhiNzVmXkEyXkFqcGc@._V1_.jpg'
       }
     ];
 
