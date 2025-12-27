@@ -10,22 +10,25 @@
     .star { cursor: pointer; font-size: 1.5rem; }
     .star:hover { transform: scale(1.2); }
 
-    /* Very big magical butterfly for the whole page - behind everything */
+    /* Full-screen centered magical butterfly - behind everything */
     #page-butterfly {
       position: fixed;
-      bottom: -100px; /* peeks up from bottom */
-      right: -100px; /* peeks from right */
-      width: 800px; /* very big, suitable for full page */
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); /* perfect center */
+      width: 100vw;   /* full viewport width */
+      height: 100vh;  /* full viewport height */
+      object-fit: contain; /* scales to fit perfectly without distortion or overflow */
       pointer-events: none;
       z-index: -1; /* behind cards and content */
-      opacity: 0.85;
+      opacity: 0.75; /* subtle dreamy glow */
       animation: flutter 14s ease-in-out infinite;
     }
     @keyframes flutter {
-      0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
-      25% { transform: translateY(-50px) translateX(40px) rotate(15deg); }
-      50% { transform: translateY(40px) translateX(-30px) rotate(-12deg); }
-      75% { transform: translateY(-45px) translateX(-40px) rotate(18deg); }
+      0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+      25% { transform: translate(-50%, -50%) translateY(-40px) translateX(30px) rotate(15deg); }
+      50% { transform: translate(-50%, -50%) translateY(30px) translateX(-25px) rotate(-12deg); }
+      75% { transform: translate(-50%, -50%) translateY(-35px) translateX(-35px) rotate(18deg); }
     }
 
     .movie-card:hover {
@@ -38,7 +41,7 @@
       style="background-image: url('https://wallpapers.com/images/hd/studio-ghibli-rolling-hills-ki5m1rdqacgexsu5.jpg')">
   <div class="min-h-screen bg-green-900/70 backdrop-blur-sm relative">
 
-    <!-- Very big magical butterfly for the entire page -->
+    <!-- Full-screen centered magical butterfly -->
     <img id="page-butterfly" src="https://i.pinimg.com/originals/df/dc/d3/dfdcd35174eeff31c50d1a23bd788af7.gif" alt="Magical butterfly">
 
     <header class="text-center py-12 relative z-10">
