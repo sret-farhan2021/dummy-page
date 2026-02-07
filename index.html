@@ -3,167 +3,212 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Ghibli Watchlist 🌱</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Happy Rose Day 🌹</title>
   <style>
-    body { font-family: 'Segoe UI', system-ui, sans-serif; }
-    .star { cursor: pointer; font-size: 1.5rem; }
-    .star:hover { transform: scale(1.2); }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    /* Full-screen centered magical butterfly */
-    #page-butterfly {
-      position: fixed;
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ffe6f2, #fff0f5, #f8e1e9);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      color: #4a2c3b;
+    }
+
+    .container {
+      position: relative;
+      text-align: center;
+    }
+
+    /* Gift Box */
+    .gift-box {
+      position: relative;
+      width: 260px;
+      height: 260px;
+      cursor: pointer;
+      transition: transform 0.4s ease;
+    }
+
+    .gift-box:hover {
+      transform: scale(1.08);
+    }
+
+    .box {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(145deg, #ff9ec1, #e07aa5);
+      border-radius: 20px;
+      position: relative;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+
+    .lid {
+      position: absolute;
+      top: -80px;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: linear-gradient(145deg, #ff88b5, #d95c8f);
+      border-radius: 20px 20px 0 0;
+      transition: all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      transform-origin: bottom center;
+      z-index: 2;
+    }
+
+    .ribbon {
+      position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 100vw;
-      height: 100vh;
-      object-fit: contain;
-      pointer-events: none;
-      z-index: -1;
-      opacity: 0.75;
-      animation: flutter 14s ease-in-out infinite;
-    }
-    @keyframes flutter {
-      0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
-      25% { transform: translate(-50%, -50%) translateY(-40px) translateX(30px) rotate(15deg); }
-      50% { transform: translate(-50%, -50%) translateY(30px) translateX(-25px) rotate(-12deg); }
-      75% { transform: translate(-50%, -50%) translateY(-35px) translateX(-35px) rotate(18deg); }
+      width: 100px;
+      height: 40px;
+      background: #c2185b;
+      border-radius: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      z-index: 3;
     }
 
-    .movie-card:hover {
-      transform: translateY(-10px) scale(1.03);
-      transition: transform 0.4s ease;
+    .ribbon::before,
+    .ribbon::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background: #c2185b;
+      top: -10px;
+      border-radius: 50%;
+    }
+
+    .ribbon::before { left: -40px; }
+    .ribbon::after { right: -40px; }
+
+    /* Falling small rose */
+    .rose-fall {
+      position: absolute;
+      top: -150px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 120px;
+      opacity: 0;
+      transition: all 2s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Big staying rose */
+    .rose-big {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      font-size: 280px;
+      opacity: 0;
+      z-index: 10;
+      pointer-events: none;
+      filter: drop-shadow(0 0 20px rgba(194, 24, 91, 0.6));
+      transition: all 1.8s ease 1.2s;
+    }
+
+    /* Message */
+    .message {
+      margin-top: 340px;
+      font-size: 2.3rem;
+      font-weight: 600;
+      color: #c2185b;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 1.5s ease 1.8s;
+      text-shadow: 0 2px 12px rgba(194,24,91,0.4);
+    }
+
+    /* Active states */
+    .gift-box.active .lid {
+      transform: translateY(-180px) rotateX(90deg);
+    }
+
+    .gift-box.active .rose-fall {
+      opacity: 1;
+      top: 40px;
+      animation: fall 2.5s ease forwards;
+    }
+
+    .gift-box.active .rose-big {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.05);
+      animation: gentlePulse 3s infinite alternate ease-in-out;
+    }
+
+    .gift-box.active .message {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes fall {
+      0%   { top: -150px; transform: translateX(-50%) rotate(0deg); }
+      100% { top: 40px;  transform: translateX(-50%) rotate(720deg); }
+    }
+
+    @keyframes gentlePulse {
+      0%   { transform: translate(-50%, -50%) scale(1.0); }
+      100% { transform: translate(-50%, -50%) scale(1.12); }
+    }
+
+    /* Sparkles for extra charm */
+    .sparkle {
+      position: absolute;
+      font-size: 36px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .sparkle1 { top: 20%; left: 15%; animation: sparkle 3s infinite 1s; }
+    .sparkle2 { top: 35%; right: 20%; animation: sparkle 3.8s infinite 1.6s; }
+    .sparkle3 { bottom: 25%; left: 40%; animation: sparkle 4.5s infinite 2.2s; }
+
+    @keyframes sparkle {
+      0%,100% { opacity: 0; transform: scale(0.6) rotate(0deg); }
+      50%     { opacity: 0.9; transform: scale(1.4) rotate(180deg); }
     }
   </style>
 </head>
-<body class="min-h-screen bg-cover bg-center bg-fixed"
-      style="background-image: url('https://wallpapers.com/images/hd/studio-ghibli-rolling-hills-ki5m1rdqacgexsu5.jpg')">
-  <div class="min-h-screen bg-green-900/70 backdrop-blur-sm relative">
+<body>
 
-    <!-- Full-screen centered magical butterfly -->
-    <img id="page-butterfly" src="https://i.pinimg.com/originals/df/dc/d3/dfdcd35174eeff31c50d1a23bd788af7.gif" alt="Magical butterfly">
+  <div class="container">
+    <div class="gift-box" id="giftBox">
+      <div class="box">
+        <div class="lid"></div>
+        <div class="ribbon"></div>
+      </div>
+      <div class="rose-fall">🌹</div>
+      <div class="rose-big">🌹</div>
+      <div class="sparkle sparkle1">✨</div>
+      <div class="sparkle sparkle2">💞</div>
+      <div class="sparkle sparkle3">🌸</div>
+    </div>
 
-    <header class="text-center py-12 relative z-10">
-      <h1 class="text-5xl md:text-6xl font-bold text-white drop-shadow-2xl">My Ghibli Watchlist 🌿</h1>
-    </header>
-    <main class="max-w-7xl mx-auto px-6 pb-12 relative z-10">
-      <div class="flex justify-center gap-4 mb-10 flex-wrap">
-        <button onclick="setFilter('all')" class="px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-500 transition text-lg font-medium">All</button>
-        <button onclick="setFilter('plan')" class="px-8 py-3 bg-amber-600 text-white rounded-full hover:bg-amber-500 transition text-lg font-medium">Plan to Watch</button>
-        <button onclick="setFilter('watched')" class="px-8 py-3 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 transition text-lg font-medium">Watched</button>
-      </div>
-      <div id="movie-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-        <div class="text-white text-center">Loading magical films...</div>
-      </div>
-    </main>
+    <div class="message" id="msg">
+      To the prettiest & best girl I know 💕<br>
+      Happy Rose Day 🌹
+    </div>
   </div>
+
   <script>
-    const API_URL = 'https://ghibliapi.vercel.app/films';
-    let movies = [];
-    let watchlist = JSON.parse(localStorage.getItem('ghibliWatchlist') || '{}');
-    let currentFilter = 'all';
+    const giftBox = document.getElementById('giftBox');
 
-    // Extras with your exact poster URLs
-    const extraFilms = [
-      {
-        id: 'nausicaa-1984',
-        title: 'Nausicaä of the Valley of the Wind',
-        description: 'Warrior and pacifist Princess Nausicaä desperately struggles to prevent two warring nations from destroying themselves and their dying planet.',
-        director: 'Hayao Miyazaki',
-        release_date: '1984',
-        movie_banner: 'https://m.media-amazon.com/images/M/MV5BODBhMTI3YzMtNTRjYS00OTFkLWJmODUtNjJiNzcwYTVkNDhiXkEyXkFqcGc@._V1_.jpg',
-        image: 'https://m.media-amazon.com/images/M/MV5BODBhMTI3YzMtNTRjYS00OTFkLWJmODUtNjJiNzcwYTVkNDhiXkEyXkFqcGc@._V1_.jpg'
-      },
-      {
-        id: 'ocean-waves-1993',
-        title: 'Ocean Waves',
-        description: 'As a young man returns home after his first year away at college he recalls his senior year of high school and the iron-willed, self-sufficient girl that stole his heart.',
-        director: 'Tomomi Mochizuki',
-        release_date: '1993',
-        movie_banner: 'https://m.media-amazon.com/images/M/MV5BYmI5Nzk4ZGMtNWY2ZS00MzBiLWFkMmMtYjI3ZjYxM2NiNzRlXkEyXkFqcGc@._V1_.jpg',
-        image: 'https://m.media-amazon.com/images/M/MV5BYmI5Nzk4ZGMtNWY2ZS00MzBiLWFkMmMtYjI3ZjYxM2NiNzRlXkEyXkFqcGc@._V1_.jpg'
-      },
-      {
-        id: 'boy-heron-2023',
-        title: 'The Boy and the Heron',
-        description: 'A young boy named Mahito yearning for his mother ventures into a world shared by the living and the dead. There, death comes to an end, and life finds a new beginning.',
-        director: 'Hayao Miyazaki',
-        release_date: '2023',
-        movie_banner: 'https://m.media-amazon.com/images/M/MV5BMzA5Zjg3MTAtM2FhZS00NTNjLTg3NjEtNWQ4MTRhZjhiNzVmXkEyXkFqcGc@._V1_.jpg',
-        image: 'https://m.media-amazon.com/images/M/MV5BMzA5Zjg3MTAtM2FhZS00NTNjLTg3NjEtNWQ4MTRhZjhiNzVmXkEyXkFqcGc@._V1_.jpg'
+    giftBox.addEventListener('click', () => {
+      if (!giftBox.classList.contains('active')) {
+        giftBox.classList.add('active');
       }
-    ];
-
-    function saveWatchlist() {
-      localStorage.setItem('ghibliWatchlist', JSON.stringify(watchlist));
-    }
-    function setFilter(filter) {
-      currentFilter = filter;
-      renderMovies();
-    }
-    function updateMovie(id, status, rating = 0) {
-      if (!watchlist[id]) watchlist[id] = {};
-      watchlist[id].status = status;
-      if (rating) watchlist[id].rating = rating;
-      saveWatchlist();
-      renderMovies();
-    }
-    function renderMovies() {
-      const grid = document.getElementById('movie-grid');
-      grid.innerHTML = '';
-      const filtered = movies.filter(movie => {
-        if (currentFilter === 'all') return true;
-        return watchlist[movie.id]?.status === currentFilter;
-      });
-      if (filtered.length === 0) {
-        grid.innerHTML = '<p class="text-white text-2xl col-span-full text-center">No movies here yet ✨</p>';
-        return;
-      }
-      filtered.forEach(movie => {
-        const data = watchlist[movie.id] || { status: 'none', rating: 0 };
-        const card = document.createElement('div');
-        card.className = 'bg-white/95 rounded-3xl overflow-hidden shadow-2xl movie-card';
-
-        card.innerHTML = `
-          <img src="${movie.movie_banner || movie.image}" alt="${movie.title}" class="w-full h-64 object-cover"/>
-          <div class="p-6">
-            <h2 class="text-2xl font-bold text-green-900">${movie.title}</h2>
-            <p class="text-gray-600 mt-1">${movie.director} • ${movie.release_date}</p>
-            <p class="text-gray-700 text-sm mt-3 line-clamp-3">${movie.description}</p>
-            <div class="mt-6 space-y-3">
-              <select onchange="updateMovie('${movie.id}', this.value)"
-                      class="w-full px-4 py-2 rounded-lg border-2 border-green-400 bg-white text-gray-800 font-medium">
-                <option value="none" ${data.status === 'none' ? 'selected' : ''}>Not Set</option>
-                <option value="plan" ${data.status === 'plan' ? 'selected' : ''}>Plan to Watch</option>
-                <option value="watched" ${data.status === 'watched' ? 'selected' : ''}>Watched</option>
-              </select>
-              ${data.status === 'watched' ? `
-                <div class="flex items-center justify-center gap-1">
-                  <span class="text-gray-700 font-medium">Rating:</span>
-                  ${[1,2,3,4,5].map(star => `
-                    <span class="star" onclick="updateMovie('${movie.id}', 'watched', ${star})">
-                      ${star <= data.rating ? '⭐' : '☆'}
-                    </span>
-                  `).join('')}
-                </div>` : ''}
-            </div>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    fetch(API_URL)
-      .then(res => res.json())
-      .then(data => {
-        movies = [...data, ...extraFilms].sort((a, b) => a.release_date.localeCompare(b.release_date));
-        renderMovies();
-      })
-      .catch(err => {
-        document.getElementById('movie-grid').innerHTML =
-          '<p class="text-red-300 text-center col-span-full">Failed to load films 😢 Check your internet!</p>';
-      });
+    });
   </script>
+
 </body>
 </html>
