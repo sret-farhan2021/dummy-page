@@ -3,243 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Special Gift</title>
+    <title>Rose Day Surprise</title>
     <style>
         :root {
-            --bg-color: #fff5f7;
-            --box-color: #ffd700;
-            --ribbon-color: #ff3838;
-            --rose-color: #ff4d6d;
+            --bg: #0a0a0a;
+            --box-gold: #e6b800;
+            --ribbon-red: #d00000;
+            --neon-pink: #ff007f;
+            --neon-glow: 0 0 10px #ff007f, 0 0 20px #ff007f, 0 0 40px #ff007f;
         }
 
         body {
             margin: 0;
-            padding: 0;
+            background: var(--bg);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: var(--bg-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            perspective: 1000px;
         }
 
-        #canvas-container {
+        /* --- THE WIDE BOX (TOP ANGLE) --- */
+        .scene {
             position: relative;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* --- THE BOX --- */
-        .gift-container {
-            position: relative;
-            width: 200px;
+            width: 350px;
             height: 200px;
+            transform: rotateX(20deg);
             cursor: pointer;
-            z-index: 10;
-            transition: transform 0.3s ease;
         }
 
-        .gift-container:hover {
-            transform: scale(1.05);
-        }
-
-        .box-body {
-            position: absolute;
-            bottom: 0;
+        .gift-box {
+            position: relative;
             width: 100%;
-            height: 150px;
-            background-color: var(--box-color);
-            border-radius: 0 0 10px 10px;
-            box-shadow: inset 0 -10px 20px rgba(0,0,0,0.1);
+            height: 100%;
+            background: var(--box-gold);
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: transform 1.5s ease;
         }
 
-        .box-lid {
-            position: absolute;
-            top: 20px;
-            width: 110%;
-            left: -5%;
-            height: 40px;
-            background-color: var(--box-color);
-            border-radius: 5px;
-            z-index: 2;
-            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
-
-        /* --- THE RIBBONS --- */
+        /* --- SLOW RIBBON UNRAVEL --- */
         .ribbon-v, .ribbon-h {
             position: absolute;
-            background-color: var(--ribbon-color);
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            background: var(--ribbon-red);
+            transition: all 2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .ribbon-v {
-            width: 40px;
-            height: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .ribbon-h {
-            width: 100%;
-            height: 40px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
+        .ribbon-v { width: 50px; height: 100%; left: 50%; transform: translateX(-50%); z-index: 2; }
+        .ribbon-h { width: 100%; height: 50px; top: 50%; transform: translateY(-50%); z-index: 1; }
 
         .bow {
             position: absolute;
-            top: -30px;
-            left: 50%;
+            top: -20px; left: 50%;
             transform: translateX(-50%);
-            width: 80px;
-            height: 40px;
-            z-index: 3;
-            transition: opacity 0.5s ease;
-        }
-
-        .bow::before, .bow::after {
-            content: '';
-            position: absolute;
-            width: 45px;
-            height: 45px;
-            border: 10px solid var(--ribbon-color);
-            border-radius: 50% 50% 0 50%;
-            transform: rotate(45deg);
-        }
-
-        .bow::after {
-            left: 35px;
-            border-radius: 50% 50% 50% 0;
-            transform: rotate(-45deg);
-        }
-
-        /* --- ANIMATION STATES --- */
-        .open .box-lid {
-            transform: translateY(-200px) rotate(15deg);
-            opacity: 0;
-        }
-
-        .open .bow {
-            opacity: 0;
-        }
-
-        .open .ribbon-v {
-            height: 0;
-            transition: height 0.5s ease;
-        }
-
-        /* --- THE BIG ROSE --- */
-        .center-rose {
-            position: absolute;
-            bottom: 50%;
-            left: 50%;
-            transform: translate(-50%, 50%) scale(0) rotate(-10deg);
+            width: 100px; height: 50px;
             z-index: 5;
-            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-align: center;
-            pointer-events: none;
+            transition: all 1.5s ease;
         }
 
-        .open + .center-rose {
-            transform: translate(-50%, 0%) scale(1) rotate(-10deg);
-        }
-
-        .rose-text {
+        /* --- LID ANIMATION --- */
+        .lid {
             position: absolute;
-            top: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            font-weight: bold;
-            color: white;
-            font-size: 1.2rem;
-            text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+            top: -5px; left: -5px;
+            width: calc(100% + 10px);
+            height: calc(100% + 10px);
+            background: var(--box-gold);
+            border-radius: 10px;
+            z-index: 3;
+            transition: all 2s cubic-bezier(0.5, -0.5, 0.1, 1.5);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* --- OPEN STATE --- */
+        .open .lid { transform: translateZ(200px) translateY(-300px) rotateX(40deg); opacity: 0; }
+        .open .ribbon-v { width: 0; opacity: 0; }
+        .open .ribbon-h { height: 0; opacity: 0; }
+        .open .bow { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+
+        /* --- NEON ROSE & TEXT --- */
+        .content {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0) rotate(-15deg);
+            text-align: center;
+            z-index: 10;
+            transition: all 1.5s 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             pointer-events: none;
         }
 
-        /* --- RAINING ROSES --- */
+        .open + .content { transform: translate(-50%, -80%) scale(1) rotate(-10deg); }
+
+        .neon-text {
+            color: #fff;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-top: 20px;
+            text-shadow: var(--neon-glow);
+            animation: flicker 2s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        /* --- ROSE RAIN --- */
         .falling-rose {
             position: absolute;
             top: -50px;
-            z-index: 1;
-            animation: fall linear infinite;
+            pointer-events: none;
+            animation: rain linear forwards;
         }
 
-        @keyframes fall {
-            to {
-                transform: translateY(105vh) rotate(360deg);
-            }
+        @keyframes rain {
+            to { transform: translateY(110vh) rotate(720deg); }
         }
+
+        /* --- FOOTER TEXT --- */
+        .footer-text {
+            margin-top: 40px;
+            color: var(--box-gold);
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            font-style: italic;
+        }
+
     </style>
 </head>
 <body>
 
-<div id="canvas-container">
-    <div class="gift-container" id="giftBox" onclick="openBox()">
-        <div class="bow"></div>
-        <div class="box-lid">
-            <div class="ribbon-v"></div>
-            <div class="ribbon-h"></div>
-        </div>
-        <div class="box-body">
+    <div class="scene" id="boxScene" onclick="openBox()">
+        <div class="gift-box" id="box">
+            <div class="bow">
+                <svg viewBox="0 0 100 50"><path d="M10,25 Q25,0 50,25 Q75,0 90,25 Q75,50 50,25 Q25,50 10,25" fill="#d00000"/></svg>
+            </div>
+            <div class="lid">
+                <div class="ribbon-v"></div>
+                <div class="ribbon-h"></div>
+            </div>
             <div class="ribbon-v"></div>
         </div>
     </div>
 
-    <div class="center-rose" id="mainRose">
-        <svg width="250" height="400" viewBox="0 0 200 400">
-            <path d="M100,380 Q120,250 100,150" fill="none" stroke="#2d6a4f" stroke-width="8" />
-            <path d="M100,280 Q150,260 140,220" fill="#40916c" />
-            <path d="M100,320 Q50,300 60,260" fill="#40916c" />
-            <circle cx="100" cy="120" r="60" fill="#ff4d6d" />
-            <circle cx="80" cy="100" r="50" fill="#ff758f" />
-            <circle cx="120" cy="100" r="50" fill="#ff8fa3" />
-            <circle cx="100" cy="80" r="40" fill="#c9184a" />
+    <div class="content" id="surprise">
+        <svg width="180" height="180" viewBox="0 0 100 100">
+            <path d="M50,90 Q60,60 50,40" stroke="#2d6a4f" stroke-width="3" fill="none"/>
+            <path d="M50,40 C70,10 90,40 50,70 C10,40 30,10 50,40" fill="var(--neon-pink)" style="filter: drop-shadow(0 0 10px var(--neon-pink))"/>
         </svg>
-        <div class="rose-text">YOU ARE AMAZING!</div>
+        <div class="neon-text">Rose to prettiest<br>and best girl</div>
     </div>
-</div>
 
-<script>
-    function openBox() {
-        const box = document.getElementById('giftBox');
-        if(!box.classList.contains('open')) {
-            box.classList.add('open');
-            startRoseRain();
+    <div class="footer-text">HAPPY ROSE DAY</div>
+
+    <script>
+        function openBox() {
+            const box = document.getElementById('boxScene');
+            if(!box.classList.contains('open')) {
+                box.classList.add('open');
+                startRain();
+            }
         }
-    }
 
-    function createSmallRose() {
-        const rose = document.createElement('div');
-        rose.classList.add('falling-rose');
-        
-        // Randomly choose rose or petal shape
-        rose.innerHTML = `
-            <svg width="20" height="20" viewBox="0 0 20 20">
-                <circle cx="10" cy="10" r="8" fill="#ff4d6d" opacity="0.8"/>
-            </svg>
-        `;
-        
-        rose.style.left = Math.random() * 100 + 'vw';
-        rose.style.animationDuration = (Math.random() * 3 + 2) + 's';
-        rose.style.opacity = Math.random();
-        
-        document.getElementById('canvas-container').appendChild(rose);
-        
-        // Clean up
-        setTimeout(() => {
-            rose.remove();
-        }, 5000);
-    }
-
-    function startRoseRain() {
-        setInterval(createSmallRose, 150);
-    }
-</script>
-
+        function startRain() {
+            setInterval(() => {
+                const r = document.createElement('div');
+                r.className = 'falling-rose';
+                r.style.left = Math.random() * 100 + 'vw';
+                r.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                r.innerHTML = `<span style="color: #ff4d6d; font-size: ${Math.random() * 20 + 10}px;">🌹</span>`;
+                document.body.appendChild(r);
+                setTimeout(() => r.remove(), 5000);
+            }, 100);
+        }
+    </script>
 </body>
 </html>
