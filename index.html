@@ -1,158 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Happy Rose Day 🌹</title>
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #fff0f5, #ffe4e1, #f8d1d9);
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      color: #c2185b;
-    }
-    .container {
-      position: relative;
-      text-align: center;
-      width: 100%;
-      height: 100vh;
-    }
-    /* Gift Box with images */
-    .gift-box {
-      position: relative;
-      width: 320px;
-      height: 320px;
-      margin: 0 auto;
-      cursor: pointer;
-      transition: transform 0.4s;
-      z-index: 10;
-    }
-    .gift-box:hover { transform: scale(1.06); }
-    .gift-img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      transition: opacity 1.2s ease;
-    }
-    .ribbon-unravel {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: url('https://thumbs.dreamstime.com/b/bright-yellow-gift-box-tied-vibrant-red-bow-close-up-view-cheerful-perfectly-wrapped-special-occasion-418997161.jpg') center/contain no-repeat;
-      opacity: 1;
-      transition: opacity 1.5s ease, transform 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      transform-origin: center;
-    }
-    .gift-box.active .ribbon-unravel {
-      opacity: 0;
-      transform: scale(1.8) rotate(45deg);
-    }
-    /* Continuous falling rose petals */
-    .petals-container {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      opacity: 0;
-      transition: opacity 1s ease 1s;
-    }
-    .gift-box.active .petals-container { opacity: 1; }
-    .petal {
-      position: absolute;
-      font-size: 20px;
-      color: #ff3366;
-      user-select: none;
-      pointer-events: none;
-      animation: fall-petal linear infinite;
-    }
-    @keyframes fall-petal {
-      0%   { transform: translateY(-100vh) rotate(0deg); opacity: 0.8; }
-      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-    }
-    /* Big slanted rose */
-    .big-rose {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0) rotate(-15deg);
-      font-size: 380px;
-      opacity: 0;
-      z-index: 5;
-      filter: drop-shadow(0 10px 30px rgba(200, 30, 80, 0.5));
-      transition: all 1.8s ease 0.8s;
-    }
-    .gift-box.active .big-rose {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1) rotate(-15deg);
-      animation: gentle-glow 4s infinite alternate;
-    }
-    @keyframes gentle-glow {
-      0%   { filter: drop-shadow(0 10px 30px rgba(200, 30, 80, 0.5)); }
-      100% { filter: drop-shadow(0 20px 50px rgba(200, 30, 80, 0.8)); }
-    }
-    /* Message */
-    .message {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 2.6rem;
-      font-weight: bold;
-      color: #c2185b;
-      text-shadow: 0 4px 15px rgba(194,24,91,0.6);
-      opacity: 0;
-      z-index: 6;
-      transition: all 1.8s ease 1.5s;
-      white-space: nowrap;
-    }
-    .gift-box.active .message {
-      opacity: 1;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Gift</title>
+    <style>
+        :root {
+            --bg-color: #fff5f7;
+            --box-color: #ffd700;
+            --ribbon-color: #ff3838;
+            --rose-color: #ff4d6d;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        #canvas-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- THE BOX --- */
+        .gift-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            cursor: pointer;
+            z-index: 10;
+            transition: transform 0.3s ease;
+        }
+
+        .gift-container:hover {
+            transform: scale(1.05);
+        }
+
+        .box-body {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 150px;
+            background-color: var(--box-color);
+            border-radius: 0 0 10px 10px;
+            box-shadow: inset 0 -10px 20px rgba(0,0,0,0.1);
+        }
+
+        .box-lid {
+            position: absolute;
+            top: 20px;
+            width: 110%;
+            left: -5%;
+            height: 40px;
+            background-color: var(--box-color);
+            border-radius: 5px;
+            z-index: 2;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        /* --- THE RIBBONS --- */
+        .ribbon-v, .ribbon-h {
+            position: absolute;
+            background-color: var(--ribbon-color);
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        .ribbon-v {
+            width: 40px;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .ribbon-h {
+            width: 100%;
+            height: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .bow {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 40px;
+            z-index: 3;
+            transition: opacity 0.5s ease;
+        }
+
+        .bow::before, .bow::after {
+            content: '';
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            border: 10px solid var(--ribbon-color);
+            border-radius: 50% 50% 0 50%;
+            transform: rotate(45deg);
+        }
+
+        .bow::after {
+            left: 35px;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+        }
+
+        /* --- ANIMATION STATES --- */
+        .open .box-lid {
+            transform: translateY(-200px) rotate(15deg);
+            opacity: 0;
+        }
+
+        .open .bow {
+            opacity: 0;
+        }
+
+        .open .ribbon-v {
+            height: 0;
+            transition: height 0.5s ease;
+        }
+
+        /* --- THE BIG ROSE --- */
+        .center-rose {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform: translate(-50%, 50%) scale(0) rotate(-10deg);
+            z-index: 5;
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .open + .center-rose {
+            transform: translate(-50%, 0%) scale(1) rotate(-10deg);
+        }
+
+        .rose-text {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            font-weight: bold;
+            color: white;
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+            pointer-events: none;
+        }
+
+        /* --- RAINING ROSES --- */
+        .falling-rose {
+            position: absolute;
+            top: -50px;
+            z-index: 1;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <div class="container">
-    <div class="gift-box" id="gift">
-      <img src="https://thumbs.dreamstime.com/b/hand-drawn-yellow-gift-box-red-bow-isolated-white-background-196189660.jpg" alt="Gift Box" class="gift-img">
-      <div class="ribbon-unravel"></div>
-      <div class="big-rose">🌹</div>
-      <div class="message">To the prettiest & best girl 🌹<br>Happy Rose Day 💕</div>
+<div id="canvas-container">
+    <div class="gift-container" id="giftBox" onclick="openBox()">
+        <div class="bow"></div>
+        <div class="box-lid">
+            <div class="ribbon-v"></div>
+            <div class="ribbon-h"></div>
+        </div>
+        <div class="box-body">
+            <div class="ribbon-v"></div>
+        </div>
     </div>
 
-    <div class="petals-container" id="petals"></div>
-  </div>
+    <div class="center-rose" id="mainRose">
+        <svg width="250" height="400" viewBox="0 0 200 400">
+            <path d="M100,380 Q120,250 100,150" fill="none" stroke="#2d6a4f" stroke-width="8" />
+            <path d="M100,280 Q150,260 140,220" fill="#40916c" />
+            <path d="M100,320 Q50,300 60,260" fill="#40916c" />
+            <circle cx="100" cy="120" r="60" fill="#ff4d6d" />
+            <circle cx="80" cy="100" r="50" fill="#ff758f" />
+            <circle cx="120" cy="100" r="50" fill="#ff8fa3" />
+            <circle cx="100" cy="80" r="40" fill="#c9184a" />
+        </svg>
+        <div class="rose-text">YOU ARE AMAZING!</div>
+    </div>
+</div>
 
-  <script>
-    const gift = document.getElementById('gift');
-    const petalsContainer = document.getElementById('petals');
-
-    // Continuous petal rain
-    function createPetal() {
-      const petal = document.createElement('div');
-      petal.className = 'petal';
-      petal.textContent = '🌸'; // or '🥀' or '🌹' for variety
-      petal.style.left = Math.random() * 100 + 'vw';
-      petal.style.animationDuration = (Math.random() * 8 + 6) + 's'; // 6-14s fall
-      petal.style.animationDelay = Math.random() * 5 + 's';
-      petalsContainer.appendChild(petal);
-      setTimeout(() => petal.remove(), 15000); // clean up
+<script>
+    function openBox() {
+        const box = document.getElementById('giftBox');
+        if(!box.classList.contains('open')) {
+            box.classList.add('open');
+            startRoseRain();
+        }
     }
 
-    gift.addEventListener('click', () => {
-      if (!gift.classList.contains('active')) {
-        gift.classList.add('active');
-        // Start continuous petals
-        setInterval(createPetal, 400); // new petal every 0.4s
-        // Initial burst
-        for(let i = 0; i < 20; i++) createPetal();
-      }
-    });
-  </script>
+    function createSmallRose() {
+        const rose = document.createElement('div');
+        rose.classList.add('falling-rose');
+        
+        // Randomly choose rose or petal shape
+        rose.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 20 20">
+                <circle cx="10" cy="10" r="8" fill="#ff4d6d" opacity="0.8"/>
+            </svg>
+        `;
+        
+        rose.style.left = Math.random() * 100 + 'vw';
+        rose.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        rose.style.opacity = Math.random();
+        
+        document.getElementById('canvas-container').appendChild(rose);
+        
+        // Clean up
+        setTimeout(() => {
+            rose.remove();
+        }, 5000);
+    }
+
+    function startRoseRain() {
+        setInterval(createSmallRose, 150);
+    }
+</script>
 
 </body>
 </html>
