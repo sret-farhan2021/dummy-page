@@ -7,7 +7,7 @@
     <style>
         /* --- GLOBAL & BOX STYLES --- */
         :root {
-            --bg: #000000; /* Pure Black Background */
+            --bg: #000000;
             --box-gold: #ffd700;
             --ribbon-red: #d52d58;
             --neon-pink: #ff007f;
@@ -32,7 +32,7 @@
             height: 180px;
             transform: rotateX(25deg);
             cursor: pointer;
-            z-index: 100;
+            z-index: 50; /* Lower than the wrapper so stem shows in front */
             transition: transform 0.5s;
         }
 
@@ -42,7 +42,7 @@
             height: 100%;
             background: var(--box-gold);
             border-radius: 8px;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2); /* Soft gold glow */
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
         }
 
         .ribbon-v, .ribbon-h {
@@ -63,7 +63,6 @@
             border-radius: 10px;
             z-index: 3;
             transition: all 2s cubic-bezier(0.5, -0.5, 0.1, 1.5);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
         .open .lid { transform: translateZ(300px) translateY(-600px) rotateX(45deg); opacity: 0; }
@@ -73,15 +72,18 @@
         /* --- THE SPECIAL ROSE STYLES --- */
         .rose-wrapper {
             position: absolute;
-            top: 40%;
+            top: 45%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
             transition: all 1.5s 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 10;
+            z-index: 100; /* Higher z-index to stay in front of the box */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .open + .rose-wrapper {
-            transform: translate(-50%, -60%) scale(0.9);
+            transform: translate(-50%, -65%) scale(0.9);
         }
 
         .container {
@@ -111,7 +113,6 @@
         .container .rose-petals > div:nth-child(2), .container .rose-petals > div:nth-child(4), .container .rose-petals > div:nth-child(6) { border-radius: 0px 30px 0px 30px; background: #b81b43; left: 0; transform-origin: bottom right; }
         .container .rose-petals > div:nth-child(3), .container .rose-petals > div:nth-child(5), .container .rose-petals > div:nth-child(7) { border-radius: 30px 0px 30px 0px; left: 40px; transform-origin: bottom left; }
 
-        /* Animation Triggered by .open class */
         .open + .rose-wrapper .rose-petals > div:nth-child(2) { animation: openRose2 3s ease-in-out forwards; animation-delay: 2s; }
         .open + .rose-wrapper .rose-petals > div:nth-child(3) { animation: openRose3 3s ease-in-out forwards; animation-delay: 2s; }
         .open + .rose-wrapper .rose-petals > div:nth-child(4) { animation: openRose4 3s ease-in-out forwards; animation-delay: 2s; }
@@ -120,19 +121,15 @@
         .container .rose-leaves > div:nth-last-child(1) { width: 55px; height: 30px; background: #338f37; top: 60px; left: 15px; border-radius: 100px; }
         .container .rose-leaves > div:nth-child(1) { width: 6px; height: 230px; top: 80px; background: #066406; left: 40px; }
 
-        /* Keyframes for Rose */
         @keyframes openRose2 { 100% { transform: rotate(-60deg); top: 210px; left: -30px; } }
         @keyframes openRose3 { 100% { transform: rotate(60deg); } }
         @keyframes openRose4 { 100% { transform: rotate(-30deg); } }
         @keyframes openRose5 { 100% { transform: rotate(30deg); } }
         @keyframes glowing { 50% { box-shadow: 0px 0px 60px #f594b8; } }
 
-        /* --- NEON MESSAGE --- */
+        /* --- NEON MESSAGE ABOVE ROSE --- */
         .neon-msg {
-            position: absolute;
-            bottom: -110px;
-            left: 50%;
-            transform: translateX(-50%);
+            margin-bottom: 20px; /* Space between text and rose */
             width: 500px;
             text-align: center;
             color: #fff;
@@ -165,6 +162,7 @@
     </div>
 
     <div class="rose-wrapper">
+        <div class="neon-msg">ROSE TO PRETTIEST<br>& BEST GIRL</div>
         <div class="container">
             <div class="glow"></div>
             <div class="rose-leaves">
@@ -175,7 +173,6 @@
                 <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
             </div>
         </div>
-        <div class="neon-msg">ROSE TO PRETTIEST<br>& BEST GIRL</div>
     </div>
 
     <div class="footer-text">HAPPY ROSE DAY</div>
