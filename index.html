@@ -6,11 +6,11 @@
     <title>Rose Day Surprise</title>
     <style>
         :root {
-            --bg: #0a0a0a;
-            --box-gold: #e6b800;
-            --ribbon-red: #d00000;
+            --bg: #050505;
+            --box-gold: #ffcc00;
+            --ribbon-red: #c00000;
             --neon-pink: #ff007f;
-            --neon-glow: 0 0 10px #ff007f, 0 0 20px #ff007f, 0 0 40px #ff007f;
+            --rose-gradient: radial-gradient(circle, #ff5e7e 0%, #ff007f 60%, #800040 100%);
         }
 
         body {
@@ -22,17 +22,18 @@
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
-            font-family: 'Arial', sans-serif;
-            perspective: 1000px;
+            font-family: 'Georgia', serif;
+            perspective: 1200px;
         }
 
         /* --- THE WIDE BOX (TOP ANGLE) --- */
         .scene {
             position: relative;
-            width: 350px;
-            height: 200px;
-            transform: rotateX(20deg);
+            width: 380px;
+            height: 180px;
+            transform: rotateX(25deg);
             cursor: pointer;
+            z-index: 5;
         }
 
         .gift-box {
@@ -40,107 +41,96 @@
             width: 100%;
             height: 100%;
             background: var(--box-gold);
-            border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border-radius: 4px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
             transition: transform 1.5s ease;
         }
 
-        /* --- SLOW RIBBON UNRAVEL --- */
         .ribbon-v, .ribbon-h {
             position: absolute;
             background: var(--ribbon-red);
-            transition: all 2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
         }
 
-        .ribbon-v { width: 50px; height: 100%; left: 50%; transform: translateX(-50%); z-index: 2; }
+        .ribbon-v { width: 60px; height: 100%; left: 50%; transform: translateX(-50%); z-index: 2; }
         .ribbon-h { width: 100%; height: 50px; top: 50%; transform: translateY(-50%); z-index: 1; }
 
-        .bow {
-            position: absolute;
-            top: -20px; left: 50%;
-            transform: translateX(-50%);
-            width: 100px; height: 50px;
-            z-index: 5;
-            transition: all 1.5s ease;
-        }
-
-        /* --- LID ANIMATION --- */
         .lid {
             position: absolute;
-            top: -5px; left: -5px;
-            width: calc(100% + 10px);
-            height: calc(100% + 10px);
+            top: -2px; left: -2px;
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
             background: var(--box-gold);
-            border-radius: 10px;
+            border-radius: 6px;
             z-index: 3;
             transition: all 2s cubic-bezier(0.5, -0.5, 0.1, 1.5);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border: 1px solid rgba(0,0,0,0.1);
         }
 
-        /* --- OPEN STATE --- */
-        .open .lid { transform: translateZ(200px) translateY(-300px) rotateX(40deg); opacity: 0; }
+        /* --- OPENING ANIMATION --- */
+        .open .lid { transform: translateZ(300px) translateY(-400px) rotateX(70deg) rotateY(20deg); opacity: 0; }
         .open .ribbon-v { width: 0; opacity: 0; }
         .open .ribbon-h { height: 0; opacity: 0; }
-        .open .bow { transform: translateX(-50%) translateY(-100px); opacity: 0; }
 
-        /* --- NEON ROSE & TEXT --- */
+        /* --- THE DETAILED ROSE --- */
         .content {
             position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(0) rotate(-15deg);
+            top: 45%; left: 50%;
+            transform: translate(-50%, -50%) scale(0);
             text-align: center;
             z-index: 10;
-            transition: all 1.5s 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 1.8s 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             pointer-events: none;
         }
 
-        .open + .content { transform: translate(-50%, -80%) scale(1) rotate(-10deg); }
+        .open + .content { transform: translate(-50%, -75%) scale(1); }
+
+        .rose-container {
+            filter: drop-shadow(0 0 15px var(--neon-pink));
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { filter: drop-shadow(0 0 15px var(--neon-pink)); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 30px var(--neon-pink)); transform: scale(1.05); }
+        }
 
         .neon-text {
             color: #fff;
-            font-size: 1.8rem;
-            text-transform: uppercase;
+            font-size: 1.6rem;
+            margin-top: 15px;
+            text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
+            letter-spacing: 1px;
             font-weight: bold;
-            margin-top: 20px;
-            text-shadow: var(--neon-glow);
-            animation: flicker 2s infinite alternate;
         }
 
-        @keyframes flicker {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-        }
-
-        /* --- ROSE RAIN --- */
+        /* --- RAINING ROSES --- */
         .falling-rose {
             position: absolute;
             top: -50px;
             pointer-events: none;
             animation: rain linear forwards;
+            font-size: 20px;
         }
 
         @keyframes rain {
             to { transform: translateY(110vh) rotate(720deg); }
         }
 
-        /* --- FOOTER TEXT --- */
         .footer-text {
-            margin-top: 40px;
+            margin-top: 50px;
             color: var(--box-gold);
-            font-size: 1.5rem;
-            letter-spacing: 5px;
-            font-style: italic;
+            font-size: 1.2rem;
+            letter-spacing: 8px;
+            opacity: 0.8;
         }
-
     </style>
 </head>
 <body>
 
     <div class="scene" id="boxScene" onclick="openBox()">
         <div class="gift-box" id="box">
-            <div class="bow">
-                <svg viewBox="0 0 100 50"><path d="M10,25 Q25,0 50,25 Q75,0 90,25 Q75,50 50,25 Q25,50 10,25" fill="#d00000"/></svg>
-            </div>
             <div class="lid">
                 <div class="ribbon-v"></div>
                 <div class="ribbon-h"></div>
@@ -150,11 +140,18 @@
     </div>
 
     <div class="content" id="surprise">
-        <svg width="180" height="180" viewBox="0 0 100 100">
-            <path d="M50,90 Q60,60 50,40" stroke="#2d6a4f" stroke-width="3" fill="none"/>
-            <path d="M50,40 C70,10 90,40 50,70 C10,40 30,10 50,40" fill="var(--neon-pink)" style="filter: drop-shadow(0 0 10px var(--neon-pink))"/>
-        </svg>
-        <div class="neon-text">Rose to prettiest<br>and best girl</div>
+        <div class="rose-container">
+            <svg width="200" height="200" viewBox="0 0 100 120">
+                <path d="M50,110 Q55,80 50,55" stroke="#1a4332" stroke-width="4" fill="none" />
+                <path d="M52,85 Q70,80 75,65 Q60,70 52,80" fill="#2d6a4f" />
+                <path d="M48,95 Q30,90 25,75 Q40,80 48,90" fill="#2d6a4f" />
+                <ellipse cx="50" cy="45" rx="25" ry="30" fill="#800040" />
+                <path d="M50,20 C75,20 85,50 50,75 C15,50 25,20 50,20" fill="#ff007f" />
+                <path d="M50,30 C65,30 70,50 50,65 C30,50 35,30 50,30" fill="#ff4d94" />
+                <circle cx="50" cy="40" r="8" fill="#ff80b3" />
+            </svg>
+        </div>
+        <div class="neon-text">ROSE TO PRETTIEST<br>& BEST GIRL</div>
     </div>
 
     <div class="footer-text">HAPPY ROSE DAY</div>
@@ -174,10 +171,12 @@
                 r.className = 'falling-rose';
                 r.style.left = Math.random() * 100 + 'vw';
                 r.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                r.innerHTML = `<span style="color: #ff4d6d; font-size: ${Math.random() * 20 + 10}px;">🌹</span>`;
+                // Mixture of flower emojis
+                const flowers = ['🌹', '🌸', '🥀'];
+                r.innerText = flowers[Math.floor(Math.random() * flowers.length)];
                 document.body.appendChild(r);
                 setTimeout(() => r.remove(), 5000);
-            }, 100);
+            }, 150);
         }
     </script>
 </body>
