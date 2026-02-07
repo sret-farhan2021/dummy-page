@@ -3,209 +3,153 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Happy Rose Day to the Besttt gurlll 🌹</title>
+  <title>Happy Rose Day 🌹</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, #ffe6f2, #fff0f5, #f8e1e9);
-      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #fff0f5, #ffe4e1, #f8d1d9);
+      font-family: 'Segoe UI', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       overflow: hidden;
-      color: #4a2c3b;
+      color: #c2185b;
     }
-
     .container {
       position: relative;
       text-align: center;
+      width: 100%;
+      height: 100vh;
     }
-
-    /* Gift Box */
+    /* Gift Box with images */
     .gift-box {
       position: relative;
-      width: 260px;
-      height: 260px;
+      width: 320px;
+      height: 320px;
+      margin: 0 auto;
       cursor: pointer;
-      transition: transform 0.4s ease;
+      transition: transform 0.4s;
+      z-index: 10;
     }
-
-    .gift-box:hover {
-      transform: scale(1.08);
-    }
-
-    .box {
+    .gift-box:hover { transform: scale(1.06); }
+    .gift-img {
       width: 100%;
       height: 100%;
-      background: linear-gradient(145deg, #ff9ec1, #e07aa5);
-      border-radius: 20px;
-      position: relative;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-      overflow: hidden;
+      object-fit: contain;
+      transition: opacity 1.2s ease;
     }
-
-    .lid {
+    .ribbon-unravel {
       position: absolute;
-      top: -80px;
-      left: 0;
-      width: 100%;
-      height: 100px;
-      background: linear-gradient(145deg, #ff88b5, #d95c8f);
-      border-radius: 20px 20px 0 0;
-      transition: all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      transform-origin: bottom center;
-      z-index: 2;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('https://thumbs.dreamstime.com/b/bright-yellow-gift-box-tied-vibrant-red-bow-close-up-view-cheerful-perfectly-wrapped-special-occasion-418997161.jpg') center/contain no-repeat;
+      opacity: 1;
+      transition: opacity 1.5s ease, transform 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transform-origin: center;
     }
-
-    .ribbon {
+    .gift-box.active .ribbon-unravel {
+      opacity: 0;
+      transform: scale(1.8) rotate(45deg);
+    }
+    /* Continuous falling rose petals */
+    .petals-container {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 1s ease 1s;
+    }
+    .gift-box.active .petals-container { opacity: 1; }
+    .petal {
+      position: absolute;
+      font-size: 20px;
+      color: #ff3366;
+      user-select: none;
+      pointer-events: none;
+      animation: fall-petal linear infinite;
+    }
+    @keyframes fall-petal {
+      0%   { transform: translateY(-100vh) rotate(0deg); opacity: 0.8; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    /* Big slanted rose */
+    .big-rose {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0) rotate(-15deg);
+      font-size: 380px;
+      opacity: 0;
+      z-index: 5;
+      filter: drop-shadow(0 10px 30px rgba(200, 30, 80, 0.5));
+      transition: all 1.8s ease 0.8s;
+    }
+    .gift-box.active .big-rose {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1) rotate(-15deg);
+      animation: gentle-glow 4s infinite alternate;
+    }
+    @keyframes gentle-glow {
+      0%   { filter: drop-shadow(0 10px 30px rgba(200, 30, 80, 0.5)); }
+      100% { filter: drop-shadow(0 20px 50px rgba(200, 30, 80, 0.8)); }
+    }
+    /* Message */
+    .message {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 100px;
-      height: 40px;
-      background: #c2185b;
-      border-radius: 30px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      z-index: 3;
-    }
-
-    .ribbon::before,
-    .ribbon::after {
-      content: '';
-      position: absolute;
-      width: 60px;
-      height: 60px;
-      background: #c2185b;
-      top: -10px;
-      border-radius: 50%;
-    }
-
-    .ribbon::before { left: -40px; }
-    .ribbon::after { right: -40px; }
-
-    /* Falling small rose */
-    .rose-fall {
-      position: absolute;
-      top: -150px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 120px;
-      opacity: 0;
-      transition: all 2s ease;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    /* Big staying rose */
-    .rose-big {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0);
-      font-size: 280px;
-      opacity: 0;
-      z-index: 10;
-      pointer-events: none;
-      filter: drop-shadow(0 0 20px rgba(194, 24, 91, 0.6));
-      transition: all 1.8s ease 1.2s;
-    }
-
-    /* Message */
-    .message {
-      margin-top: 340px;
-      font-size: 2.3rem;
-      font-weight: 600;
+      font-size: 2.6rem;
+      font-weight: bold;
       color: #c2185b;
+      text-shadow: 0 4px 15px rgba(194,24,91,0.6);
       opacity: 0;
-      transform: translateY(40px);
-      transition: all 1.5s ease 1.8s;
-      text-shadow: 0 2px 12px rgba(194,24,91,0.4);
+      z-index: 6;
+      transition: all 1.8s ease 1.5s;
+      white-space: nowrap;
     }
-
-    /* Active states */
-    .gift-box.active .lid {
-      transform: translateY(-180px) rotateX(90deg);
-    }
-
-    .gift-box.active .rose-fall {
-      opacity: 1;
-      top: 40px;
-      animation: fall 2.5s ease forwards;
-    }
-
-    .gift-box.active .rose-big {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1.05);
-      animation: gentlePulse 3s infinite alternate ease-in-out;
-    }
-
     .gift-box.active .message {
       opacity: 1;
-      transform: translateY(0);
-    }
-
-    @keyframes fall {
-      0%   { top: -150px; transform: translateX(-50%) rotate(0deg); }
-      100% { top: 40px;  transform: translateX(-50%) rotate(720deg); }
-    }
-
-    @keyframes gentlePulse {
-      0%   { transform: translate(-50%, -50%) scale(1.0); }
-      100% { transform: translate(-50%, -50%) scale(1.12); }
-    }
-
-    /* Sparkles for extra charm */
-    .sparkle {
-      position: absolute;
-      font-size: 36px;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .sparkle1 { top: 20%; left: 15%; animation: sparkle 3s infinite 1s; }
-    .sparkle2 { top: 35%; right: 20%; animation: sparkle 3.8s infinite 1.6s; }
-    .sparkle3 { bottom: 25%; left: 40%; animation: sparkle 4.5s infinite 2.2s; }
-
-    @keyframes sparkle {
-      0%,100% { opacity: 0; transform: scale(0.6) rotate(0deg); }
-      50%     { opacity: 0.9; transform: scale(1.4) rotate(180deg); }
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <div class="gift-box" id="giftBox">
-      <div class="box">
-        <div class="lid"></div>
-        <div class="ribbon"></div>
-      </div>
-      <div class="rose-fall">🌹</div>
-      <div class="rose-big">🌹</div>
-      <div class="sparkle sparkle1">✨</div>
-      <div class="sparkle sparkle2">💞</div>
-      <div class="sparkle sparkle3">🌸</div>
+    <div class="gift-box" id="gift">
+      <img src="https://thumbs.dreamstime.com/b/hand-drawn-yellow-gift-box-red-bow-isolated-white-background-196189660.jpg" alt="Gift Box" class="gift-img">
+      <div class="ribbon-unravel"></div>
+      <div class="big-rose">🌹</div>
+      <div class="message">To the prettiest & best girl 🌹<br>Happy Rose Day 💕</div>
     </div>
 
-    <div class="message" id="msg">
-      To the prettiest & best girl I know 💕<br>
-      Happy Rose Day 🌹
-    </div>
+    <div class="petals-container" id="petals"></div>
   </div>
 
   <script>
-    const giftBox = document.getElementById('giftBox');
+    const gift = document.getElementById('gift');
+    const petalsContainer = document.getElementById('petals');
 
-    giftBox.addEventListener('click', () => {
-      if (!giftBox.classList.contains('active')) {
-        giftBox.classList.add('active');
+    // Continuous petal rain
+    function createPetal() {
+      const petal = document.createElement('div');
+      petal.className = 'petal';
+      petal.textContent = '🌸'; // or '🥀' or '🌹' for variety
+      petal.style.left = Math.random() * 100 + 'vw';
+      petal.style.animationDuration = (Math.random() * 8 + 6) + 's'; // 6-14s fall
+      petal.style.animationDelay = Math.random() * 5 + 's';
+      petalsContainer.appendChild(petal);
+      setTimeout(() => petal.remove(), 15000); // clean up
+    }
+
+    gift.addEventListener('click', () => {
+      if (!gift.classList.contains('active')) {
+        gift.classList.add('active');
+        // Start continuous petals
+        setInterval(createPetal, 400); // new petal every 0.4s
+        // Initial burst
+        for(let i = 0; i < 20; i++) createPetal();
       }
     });
   </script>
