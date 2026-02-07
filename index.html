@@ -5,46 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rose Day Surprise</title>
     <style>
+        /* --- GLOBAL & BOX STYLES --- */
         :root {
-            --bg: #fffafa;
-            --box-yellow: #ffd700;
-            --ribbon-red: #e63946;
-            --rose-main: #ff4d6d;
-            --rose-dark: #c9184a;
-            --rose-light: #ffb3c1;
+            --bg: #000000; /* Pure Black Background */
+            --box-gold: #ffd700;
+            --ribbon-red: #d52d58;
             --neon-pink: #ff007f;
         }
 
         body {
             margin: 0;
-            background-color: var(--bg);
+            background: var(--bg);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
-            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Arial', sans-serif;
             perspective: 1200px;
         }
 
-        /* --- WIDE BOX TOP ANGLE --- */
         .scene {
             position: relative;
-            width: 400px;
+            width: 380px;
             height: 180px;
             transform: rotateX(25deg);
             cursor: pointer;
-            z-index: 5;
+            z-index: 100;
+            transition: transform 0.5s;
         }
 
         .gift-box {
             position: relative;
             width: 100%;
             height: 100%;
-            background: var(--box-yellow);
+            background: var(--box-gold);
             border-radius: 8px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2); /* Soft gold glow */
         }
 
         .ribbon-v, .ribbon-h {
@@ -53,68 +51,105 @@
             transition: all 2.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .ribbon-v { width: 60px; height: 100%; left: 50%; transform: translateX(-50%); z-index: 2; }
+        .ribbon-v { width: 50px; height: 100%; left: 50%; transform: translateX(-50%); z-index: 2; }
         .ribbon-h { width: 100%; height: 50px; top: 50%; transform: translateY(-50%); z-index: 1; }
 
         .lid {
             position: absolute;
-            top: -2px; left: -2px;
-            width: calc(100% + 4px);
-            height: calc(100% + 4px);
-            background: var(--box-yellow);
+            top: -5px; left: -5px;
+            width: calc(100% + 10px);
+            height: calc(100% + 10px);
+            background: var(--box-gold);
             border-radius: 10px;
             z-index: 3;
             transition: all 2s cubic-bezier(0.5, -0.5, 0.1, 1.5);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
-        /* --- OPEN ANIMATION --- */
-        .open .lid { transform: translateZ(400px) translateY(-500px) rotateX(40deg); opacity: 0; }
+        .open .lid { transform: translateZ(300px) translateY(-600px) rotateX(45deg); opacity: 0; }
         .open .ribbon-v { width: 0; opacity: 0; }
         .open .ribbon-h { height: 0; opacity: 0; }
 
-        /* --- MULTI-LAYERED ROSE --- */
-        .content {
+        /* --- THE SPECIAL ROSE STYLES --- */
+        .rose-wrapper {
             position: absolute;
-            top: 40%; left: 50%;
-            transform: translate(-50%, -50%) scale(0) rotate(-10deg);
-            text-align: center;
-            z-index: 10;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
             transition: all 1.5s 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
+            z-index: 10;
         }
 
-        .open + .content { transform: translate(-50%, -85%) scale(1) rotate(-10deg); }
+        .open + .rose-wrapper {
+            transform: translate(-50%, -60%) scale(0.9);
+        }
 
+        .container {
+            width: 100px;
+            height: 300px;
+            position: relative;
+        }
+
+        .container div { position: absolute; }
+
+        .container .glow {
+            width: 170px; height: 170px;
+            border-radius: 100%;
+            border: 1px solid rgba(245, 148, 184, 0.47);
+            box-shadow: 0px 0px 20px #f594b8;
+            left: -40px; top: -40px;
+            animation: glowing 2.5s ease-in-out infinite;
+        }
+
+        .container .rose-petals > div {
+            background: #d52d58;
+            width: 45px; height: 80px;
+            transition: all 0.5s ease-out;
+        }
+
+        .container .rose-petals > div:nth-child(1) { border-radius: 15px; left: 20px; top: -6px; }
+        .container .rose-petals > div:nth-child(2), .container .rose-petals > div:nth-child(4), .container .rose-petals > div:nth-child(6) { border-radius: 0px 30px 0px 30px; background: #b81b43; left: 0; transform-origin: bottom right; }
+        .container .rose-petals > div:nth-child(3), .container .rose-petals > div:nth-child(5), .container .rose-petals > div:nth-child(7) { border-radius: 30px 0px 30px 0px; left: 40px; transform-origin: bottom left; }
+
+        /* Animation Triggered by .open class */
+        .open + .rose-wrapper .rose-petals > div:nth-child(2) { animation: openRose2 3s ease-in-out forwards; animation-delay: 2s; }
+        .open + .rose-wrapper .rose-petals > div:nth-child(3) { animation: openRose3 3s ease-in-out forwards; animation-delay: 2s; }
+        .open + .rose-wrapper .rose-petals > div:nth-child(4) { animation: openRose4 3s ease-in-out forwards; animation-delay: 2s; }
+        .open + .rose-wrapper .rose-petals > div:nth-child(5) { animation: openRose5 3s ease-in-out forwards; animation-delay: 2s; }
+
+        .container .rose-leaves > div:nth-last-child(1) { width: 55px; height: 30px; background: #338f37; top: 60px; left: 15px; border-radius: 100px; }
+        .container .rose-leaves > div:nth-child(1) { width: 6px; height: 230px; top: 80px; background: #066406; left: 40px; }
+
+        /* Keyframes for Rose */
+        @keyframes openRose2 { 100% { transform: rotate(-60deg); top: 210px; left: -30px; } }
+        @keyframes openRose3 { 100% { transform: rotate(60deg); } }
+        @keyframes openRose4 { 100% { transform: rotate(-30deg); } }
+        @keyframes openRose5 { 100% { transform: rotate(30deg); } }
+        @keyframes glowing { 50% { box-shadow: 0px 0px 60px #f594b8; } }
+
+        /* --- NEON MESSAGE --- */
         .neon-msg {
-            margin-top: 20px;
-            font-weight: 800;
-            color: #fff;
-            font-size: 1.8rem;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink), 0 0 30px var(--neon-pink);
-            line-height: 1.2;
-        }
-
-        /* --- RAINING ROSES --- */
-        .falling-rose {
             position: absolute;
-            top: -50px;
-            pointer-events: none;
-            animation: rain linear forwards;
+            bottom: -110px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 500px;
+            text-align: center;
+            color: #fff;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink), 0 0 40px var(--neon-pink);
+            opacity: 0;
+            transition: opacity 1.5s 2.5s;
         }
 
-        @keyframes rain {
-            to { transform: translateY(110vh) rotate(360deg); }
-        }
+        .open + .rose-wrapper .neon-msg { opacity: 1; }
 
-        .footer-text {
-            margin-top: 60px;
-            color: #555;
-            font-size: 1.4rem;
-            letter-spacing: 6px;
-            font-weight: 300;
-        }
+        /* --- FOOTER & RAIN --- */
+        .footer-text { margin-top: 60px; color: var(--box-gold); letter-spacing: 8px; font-weight: bold; opacity: 0.8; }
+        .falling-rose { position: absolute; top: -50px; animation: rain linear forwards; z-index: 1000; }
+        @keyframes rain { to { transform: translateY(110vh) rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -129,28 +164,27 @@
         </div>
     </div>
 
-    <div class="content" id="surprise">
-        <svg width="220" height="280" viewBox="0 0 100 140">
-            <path d="M50,135 Q55,100 50,70" stroke="#2d6a4f" stroke-width="5" fill="none" />
-            <path d="M52,110 Q75,105 80,85 Q65,95 52,105" fill="#40916c" />
-            <path d="M48,120 Q25,115 20,95 Q35,105 48,115" fill="#40916c" />
-            
-            <circle cx="50" cy="50" r="45" fill="var(--rose-dark)" /> <path d="M50,10 C80,10 95,45 50,85 C5,45 20,10 50,10" fill="var(--rose-main)" /> <path d="M50,20 C70,20 80,45 50,70 C20,45 30,20 50,20" fill="var(--rose-dark)" opacity="0.8" />
-            <path d="M50,25 C65,25 75,45 50,65 C25,45 35,25 50,25" fill="#ff758f" />
-            <path d="M50,35 C60,35 65,50 50,60 C35,50 40,35 50,35" fill="var(--rose-light)" />
-            
-            <ellipse cx="50" cy="45" rx="8" ry="10" fill="var(--rose-dark)" />
-        </svg>
-        <div class="neon-msg">Rose to prettiest<br>& best girl</div>
+    <div class="rose-wrapper">
+        <div class="container">
+            <div class="glow"></div>
+            <div class="rose-leaves">
+                <div></div>
+                <div></div>
+            </div>
+            <div class="rose-petals">
+                <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+            </div>
+        </div>
+        <div class="neon-msg">ROSE TO PRETTIEST<br>& BEST GIRL</div>
     </div>
 
     <div class="footer-text">HAPPY ROSE DAY</div>
 
     <script>
         function openBox() {
-            const box = document.getElementById('boxScene');
-            if(!box.classList.contains('open')) {
-                box.classList.add('open');
+            const scene = document.getElementById('boxScene');
+            if(!scene.classList.contains('open')) {
+                scene.classList.add('open');
                 startRain();
             }
         }
@@ -161,10 +195,10 @@
                 r.className = 'falling-rose';
                 r.style.left = Math.random() * 100 + 'vw';
                 r.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                r.innerHTML = `<span style="color: #ff4d6d; font-size: ${Math.random() * 15 + 15}px;">🌹</span>`;
+                r.innerHTML = `<span style="color: #ff4d6d; font-size: ${Math.random() * 10 + 15}px;">🌹</span>`;
                 document.body.appendChild(r);
                 setTimeout(() => r.remove(), 5000);
-            }, 120);
+            }, 180);
         }
     </script>
 </body>
