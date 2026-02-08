@@ -7,8 +7,8 @@
     <style>
         :root {
             --bg: #000000;
-            --box-gold: #ffd700;
-            --ribbon-red: #d52d58;
+            --box-red: #b30000;
+            --ribbon-gold: #ffd700;
             --diamond-glow: #00f2ff;
             --ring-gold: #ffcc33;
         }
@@ -40,14 +40,14 @@
             position: relative;
             width: 100%;
             height: 100%;
-            background: var(--box-gold);
+            background: var(--box-red);
             border-radius: 8px;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 30px rgba(179, 0, 0, 0.3);
         }
 
         .ribbon-v, .ribbon-h {
             position: absolute;
-            background: var(--ribbon-red);
+            background: var(--ribbon-gold);
             transition: all 2.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -59,10 +59,11 @@
             top: -5px; left: -5px;
             width: calc(100% + 10px);
             height: calc(100% + 10px);
-            background: var(--box-gold);
+            background: var(--box-red);
             border-radius: 10px;
             z-index: 3;
             transition: all 2s cubic-bezier(0.5, -0.5, 0.1, 1.5);
+            border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
         .open .lid { transform: translateZ(300px) translateY(-600px) rotateX(45deg); opacity: 0; }
@@ -83,7 +84,7 @@
         }
 
         .open + .ring-wrapper {
-            transform: translate(-50%, -65%) scale(1.2);
+            transform: translate(-50%, -65%) scale(1.1);
         }
 
         .ring-container {
@@ -102,7 +103,7 @@
             border-radius: 50%;
             position: absolute;
             bottom: 10px;
-            box-shadow: 0 0 10px rgba(255, 204, 51, 0.5);
+            box-shadow: 0 0 15px rgba(255, 204, 51, 0.6);
         }
 
         .diamond {
@@ -122,23 +123,31 @@
             50% { filter: brightness(1.5) drop-shadow(0 0 20px var(--diamond-glow)); }
         }
 
-        /* --- NEON MESSAGE ABOVE RING --- */
+        /* --- NEON MESSAGE --- */
         .neon-msg {
-            margin-bottom: 40px;
-            width: 500px;
+            margin-bottom: 30px;
+            width: 600px;
             text-align: center;
             color: #fff;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: bold;
             letter-spacing: 1px;
-            text-shadow: 0 0 10px #00f2ff, 0 0 20px #00f2ff;
+            text-shadow: 0 0 10px var(--diamond-glow), 0 0 20px var(--diamond-glow);
             opacity: 0;
             transition: opacity 1.5s 2.5s;
         }
 
+        .concert-hint {
+            font-size: 1rem;
+            display: block;
+            margin-top: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+
         .open + .ring-wrapper .neon-msg { opacity: 1; }
 
-        /* --- RAIN STYLES (Sparkles instead of roses) --- */
+        /* --- SPARKLE RAIN --- */
         .falling-sparkle {
             position: absolute;
             top: -50px;
@@ -148,7 +157,7 @@
 
         @keyframes rain { to { transform: translateY(110vh) rotate(360deg); } }
 
-        .footer-text { margin-top: 60px; color: var(--box-gold); letter-spacing: 8px; font-weight: bold; opacity: 0.8; }
+        .footer-text { margin-top: 60px; color: var(--ribbon-gold); letter-spacing: 8px; font-weight: bold; opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -164,7 +173,10 @@
     </div>
 
     <div class="ring-wrapper">
-        <div class="neon-msg">WILL YOU BE MORE<br>THAN JUST A FRIEND?</div>
+        <div class="neon-msg">
+            RING FOR BEST GIRL
+            <span class="concert-hint">psst... will give u proper ring in concert</span>
+        </div>
         <div class="ring-container">
             <div class="diamond"></div>
             <div class="ring-band"></div>
